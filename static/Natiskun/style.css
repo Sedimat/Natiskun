@@ -172,3 +172,26 @@ header {
     font-size: 16px;
     color: white;
 }
+
+.table_basket1{
+    border: none;
+    background-color: #434647;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+    margin: 2px 2px 2px 2px;
+    width: 190px;
+    height: 30px
+}
+
+.butt_green0{
+    padding: 5px 8px 5px 8px;
+    margin: 2px 2px 2px 270px;
+    border-radius: 5px;
+    font-family: cursive;
+    font-size: 14px;
+    background-color: greenyellow;
+}
+.avatar{
+    margin: 7px;
+}

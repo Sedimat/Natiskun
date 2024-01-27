@@ -26,8 +26,8 @@
             <table>
                 <tr>
                     <td width="300">
-                        <form method="POST" role="form" action="#">
-                            <!--                {% csrf_token %}-->
+                        <form method="POST" role="form" action="{% url 'login' %}">
+                            {% csrf_token %}
                             <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
                             <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
                             <button type="submit" class="butt_green">Війти</button>
@@ -53,7 +53,7 @@
                     <tr>
                         <form method="POST" role="form" action="#">
                             <td width="300">
-                                <!--                {% csrf_token %}-->
+                                {% csrf_token %}
                                 <textarea class="text_area" name="description" placeholder="Повідомленя"></textarea>
                             </td>
                             <td><button type="submit" class="butt_green">Send</button></td>
@@ -65,26 +65,12 @@
             </div>
 
             <div class="div_messeg">
-                <div class="messeg_l">
-                    <p id="mess">Привітю. Як справи?</p>
-                    <p id="time">16:25</p>
-
-                </div>
 
             </div>
 
         </div>
 
         <div class="navigation">
-            <div class="group">
-                <p id="mess">Вася Пупкін</p>
-
-            </div>
-
-            <div class="group">
-                <p id="mess">Женя Вуйко</p>
-
-            </div>
 
         </div>
 

@@ -1,0 +1,68 @@
+{% extends "Natiskun/base.html" %}
+
+{% block login %}
+
+{% if user.is_authenticated %}
+<table>
+    <tr>
+        <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
+        <td><p id="mess">{{ user.username }}</p></td>
+        <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
+        {% if request.user.is_staff %}
+            <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
+        {% endif %}
+    </tr>
+</table>
+
+{% else %}
+<table>
+    <tr>
+        <td width="300">
+            <form method="POST" role="form" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
+                <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
+                <button type="submit" class="butt_green">Війти</button>
+            </form>
+        </td>
+        <td><a class="butt_red" href="#">Реєстрація</a></td>
+    </tr>
+</table>
+{% endif %}
+
+{% endblock %}
+
+{% block navigation %}
+
+    {% if user.is_authenticated %}
+        <div class="group">
+            <p id="mess">Вася Пупкін</p>
+
+        </div>
+
+        <div class="group">
+            <p id="mess">Женя Вуйко</p>
+
+        </div>
+
+    {% else %}
+
+        <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+
+            <input type="text" class="table_basket1" name="username" id="username" placeholder="Ваш нікнейм">
+            <input type="email" class="table_basket1" name="email" id="email" placeholder="Електрона пошта">
+            <input type="password" class="table_basket1" name="password1" id="password1" placeholder="Пароль">
+            <input type="password" class="table_basket1" name="password2" id="password2" placeholder="Підтвердження">
+
+            <button type="submit" class="butt_green0">Зареєструватись</button>
+        </form>
+
+    {% endif %}
+
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
