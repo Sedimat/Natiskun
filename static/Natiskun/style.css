@@ -1,0 +1,174 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #1f2733;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    background-color: black;
+    margin: auto;
+    width: 1250px;
+    height: 70px;
+    /*    border: 1px solid gray;*/
+}
+#div_li{
+    float: left;
+    width: 850px;
+}
+
+.login{
+    float: right;
+    width: 400px;
+    height: 70px
+}
+.log_form{
+    border: none;
+    background-color: #434647;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+    margin: 17px 0px 17px 10px;
+    width: 100px;
+    height: 30px
+}
+.butt_green{
+    padding: 5px 8px 5px 8px;
+    margin: 0px 0px 0px 5px;
+    border-radius: 5px;
+    font-family: cursive;
+    font-size: 14px;
+    background-color: greenyellow;
+}
+
+.butt_red{
+    text-decoration: none;
+    float: right;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    background-color: orange;
+    font-family: cursive;
+    font-size: 14px;
+    color: black;
+    border: 2px solid #434647;
+}
+
+#nav{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+#li {
+    margin: 20px 70px 20px 70px;
+}
+
+.head_a{
+    text-decoration: none;
+    font-family: Verdana;
+    font-size: 18px;
+    color: white;
+    
+}
+
+.content {
+    display: flex;
+    height: calc(100vh - 70px);
+    background-color: black;
+    margin: auto;
+    width: 1250px;
+    
+}
+
+.navigation {
+    background-color: #26292e;
+    width: 400px;
+}
+
+.post {
+    flex: 1;
+    background-color: #2a2f38;
+    display: flex;
+    flex-direction: column-reverse;
+
+}
+.div_messeg {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 850px;
+    height: calc(100vh - 70px - 140px);
+    overflow-y: scroll; /* Вертикальний скрол */
+    overflow-x: hidden; /* Приховуємо горизонтальний скрол */
+    scrollbar-width: thin; /* Задаємо товщину вертикального скролбара для браузерів на основі Mozilla (Firefox) */
+    scrollbar-color: #888 #f0f0f0; /* Колір вертикального скролбара для Firefox */
+}
+
+/* Стилізація вертикального скролбара для браузерів на основі Chromium (Chrome, Edge) */
+.div_messeg::-webkit-scrollbar {
+    width: 5px;
+}
+
+.div_messeg::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+.group {
+    border-radius: 10px;
+    background-color: #062b66;
+    margin: 5px;
+    width: 390px;
+    height: 70px;
+
+}
+
+.div_form {
+    margin: 10px 25px 10px 25px;
+    width: 800px;
+    height: 65px;
+
+}
+
+.messeg_l {
+    background-color: #105ce0;
+    width: 400px;
+    margin: 5px 10px 5px 10px;
+    border-radius: 10px 10px 10px 0px;
+
+}
+
+.messeg_r {
+    background-color: #105ce0;
+    width: 400px;
+    margin: 5px 10px 5px 430px;
+    border-radius: 10px 10px 0px 10px;
+
+}
+
+#mess{
+    margin: 0px 10px 0px 10px;
+    font-family: cursive;
+    font-size: 18px;
+    color: white;
+}
+
+#time{
+    margin: 2px 5px 2px 360px;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: white;
+}
+.text_area{
+    border: none;
+    resize: none;
+    width: 690px;
+    height: 50px;
+    background-color: #434647;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+}

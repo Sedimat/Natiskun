@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Natiskun</title>
+
+    {% load static %}
+
+    <link href="{% static 'Natiskun/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div id="div_li">
+            <nav>
+                <ul id="nav">
+                    <li id="li"><a class="head_a" href="#">NatiSkun</a></li>
+                    <!--
+                <li id="li"><a class="head_a" href="#">Послуги</a></li>
+                <li id="li"><a class="head_a" href="#">Контакти</a></li>
+-->
+                </ul>
+            </nav>
+        </div>
+        <div class="login">
+            <table>
+                <tr>
+                    <td width="300">
+                        <form method="POST" role="form" action="#">
+                            <!--                {% csrf_token %}-->
+                            <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
+                            <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
+                            <button type="submit" class="butt_green">Війти</button>
+
+                        </form>
+                    </td>
+                    <td><a class="butt_red" href="#">Реєстрація</a></td>
+                </tr>
+
+            </table>
+
+
+
+        </div>
+    </header>
+
+    <div class="content">
+
+        <div class="post">
+
+            <div class="div_form">
+                <table>
+                    <tr>
+                        <form method="POST" role="form" action="#">
+                            <td width="300">
+                                <!--                {% csrf_token %}-->
+                                <textarea class="text_area" name="description" placeholder="Повідомленя"></textarea>
+                            </td>
+                            <td><button type="submit" class="butt_green">Send</button></td>
+                        </form>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="div_messeg">
+               
+                <div class="messeg_l">
+                    <p id="mess">Привітю. Як справи?</p>
+                    <p id="time">16:25</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Привітю. Все як завжди.</p>
+                    <p id="time"> 16:27</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Лорем іпусм вапапвпвапвапвапавпва павпвпв павпва пвп впв апещрен еное ено е оеное ооеоеое.</p>
+                    <p id="time"> 16:23</p>
+
+                </div>
+                <div class="messeg_l">
+                    <p id="mess">Привітю. Як справи?</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Привітю. Все як завжди.</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Лорем іпусм вапапвпвапвапвапавпва павпвпв павпва пвп впв апещрен еное ено е оеное ооеоеое.</p>
+                    <p id="time"> 16:23</p>
+
+                </div>
+                <div class="messeg_l">
+                    <p id="mess">Привітю. Як справи?</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Привітю. Все як завжди.</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Лорем іпусм вапапвпвапвапвапавпва павпвпв павпва пвп впв апещрен еное ено е оеное ооеоеое.</p>
+                    <p id="time"> 16:23</p>
+
+                </div>
+                <div class="messeg_l">
+                    <p id="mess">Привітю. Як справи?</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Привітю. Все як завжди.</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Лорем іпусм вапапвпвапвапвапавпва павпвпв павпва пвп впв апещрен еное ено е оеное ооеоеое.</p>
+                    <p id="time"> 16:23</p>
+
+                </div>
+                <div class="messeg_l">
+                    <p id="mess">Привітю. Як справи?</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Привітю. Все як завжди.</p>
+                    <p id="time"> 16:22</p>
+
+                </div>
+
+                <div class="messeg_r">
+                    <p id="mess">Лорем іпусм вапапвпвапвапвапавпва павпвпв павпва пвп впв апещрен еное ено е оеное ооеоеое.</p>
+                    <p id="time"> 16:23</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="navigation">
+            <div class="group">
+                <p id="mess">Вася Пупкін</p>
+
+            </div>
+
+            <div class="group">
+                <p id="mess">Женя Вуйко</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body></html>
