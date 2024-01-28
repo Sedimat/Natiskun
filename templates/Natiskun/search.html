@@ -10,7 +10,6 @@
         <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
         {% if request.user.is_staff %}
             <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
-            <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
         {% endif %}
     </tr>
 </table>
@@ -36,6 +35,21 @@
 {% block navigation %}
 
     {% if user.is_authenticated %}
+
+        {% for l in list_user %}
+
+            <div class="group">
+                <table>
+                    <tr>
+                        <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
+                        <td width="100"><p id="mess">{{ l.0 }}</p></td>
+                        <td width="100"><p id="mess">id:{{ l.2 }}</p></td>
+                    </tr>
+                </table>
+
+            </div>
+
+        {% endfor %}
 
 <!--        <div class="group">-->
 <!--            <p id="mess">Вася Пупкін</p>-->

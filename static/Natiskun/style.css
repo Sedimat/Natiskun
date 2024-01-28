@@ -8,21 +8,51 @@ body {
 }
 
 header {
+    display: flex;
     background-color: black;
     margin: auto;
     width: 1250px;
-    height: 70px;
+    height: 60px;
     /*    border: 1px solid gray;*/
 }
-#div_li{
-    float: left;
-    width: 850px;
+.div_li{
+    flex: 2;
+    width: 300px;
+}
+.div_search{
+    padding: 0px;
+    margin: 0px;
+    flex: 2;
+    width: 300px;
+    height: 70px
+}
+.search_form{
+    border: none;
+    background-color: #434647;
+    border-radius: 15px;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+    margin: 10px 0px 10px 10px;
+    width: 350px;
+    height: 33px
+}
+
+
+.butt_search{
+    border: none;
+    padding: 6px;
+    margin: 0px;
+    border-radius: 20px;
+    font-family: cursive;
+    font-size: 18px;
+    background-color: #434647;
 }
 
 .login{
-    float: right;
     width: 400px;
     height: 70px
+
 }
 .log_form{
     border: none;
@@ -193,5 +223,5 @@ header {
     background-color: greenyellow;
 }
 .avatar{
-    margin: 7px;
+    margin: 3px;
 }

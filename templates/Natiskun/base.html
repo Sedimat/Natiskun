@@ -10,10 +10,10 @@
 
 <body>
     <header>
-        <div id="div_li">
+        <div class="div_li">
             <nav>
                 <ul id="nav">
-                    <li id="li"><a class="head_a" href="#">NatiSkun</a></li>
+                    <li id="li"><a class="head_a" href="{% url 'index' %}">NatiSkun</a></li>
                     <!--
                 <li id="li"><a class="head_a" href="#">Послуги</a></li>
                 <li id="li"><a class="head_a" href="#">Контакти</a></li>
@@ -21,6 +21,23 @@
                 </ul>
             </nav>
         </div>
+
+        <div class="div_search">
+            <table>
+                <tr>
+                    <td>
+                        <form method="POST" role="form" action="{% url 'search' id=0 %}">
+                            {% csrf_token %}
+                            <input type="text" class="search_form" name="search"  placeholder="Знайти">
+                            <button type="submit" class="butt_search">🔎</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
         <div class="login">
             {% block login %}
 
@@ -38,8 +55,9 @@
                 <table>
                     <tr>
                         <form method="POST" role="form" action="#">
+                            {% csrf_token %}
                             <td width="300">
-                                <!--                {% csrf_token %}-->
+
                                 <textarea class="text_area" name="description" placeholder="Повідомленя"></textarea>
                             </td>
                             <td><button type="submit" class="butt_green">Send</button></td>
