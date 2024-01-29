@@ -1,0 +1,127 @@
+{% extends "Natiskun/base.html" %}
+
+{% block login %}
+
+{% if user.is_authenticated %}
+<table>
+    <tr>
+        <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
+        <td><p id="mess">{{ user.username }}</p></td>
+        <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
+        {% if request.user.is_staff %}
+        <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
+        <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
+        {% endif %}
+    </tr>
+</table>
+
+{% else %}
+<table>
+    <tr>
+        <td width="300">
+            <form method="POST" role="form" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
+                <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
+                <button type="submit" class="butt_green">Війти</button>
+            </form>
+        </td>
+        <td><a class="butt_red" href="#">Реєстрація</a></td>
+    </tr>
+</table>
+{% endif %}
+
+{% endblock %}
+
+{% block navigation %}
+
+{% if user.is_authenticated %}
+
+{% for cont in list_cont %}
+<a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
+
+    {% if name == cont.1 %}
+    <div class="group" style="background-color: #49337d;">
+    {% else %}
+    <div class="group">
+    {% endif %}
+
+        <table>
+            <tr id="test">
+                <td width="60"><img class="avatar" src="{{ cont.0.url }}" style="width:60px;"></td>
+                <td>
+                    <table>
+                        <tr id="test">
+                            <td height="15"><p id="mess">{{ cont.1 }}</p></td>
+                        </tr>
+                        <tr id="test">
+                            <td height="20"><p id="mess1">{{ cont.2 }}</p></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</a>
+
+{% endfor %}
+
+
+{% else %}
+
+{% endif %}
+
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block messeg %}
+
+{% for mes in messegs %}
+
+    {% if mes.user_1 == user.username %}
+        <div class="messeg_r">
+            <p id="mess">{{ mes.user_1 }}</p>
+            <p id="mess">{{ mes.messeg_1 }}</p>
+            <p id="time">{{ mes.timestamp }}</p>
+        </div>
+    {% else %}
+        <div class="messeg_l">
+            <p id="mess">{{ mes.user_1 }}</p>
+            <p id="mess">{{ mes.messeg_1 }}</p>
+            <p id="time">{{ mes.timestamp }}</p>
+        </div>
+
+
+    {% endif %}
+
+{% endfor %}
+
+
+
+{% endblock %}
+
+
+{% block messeg_form %}
+
+<table>
+    <tr>
+        <form method="POST" role="form" action="{% url 'contact' name %}">
+            {% csrf_token %}
+            <td width="300">
+
+                <textarea class="text_area" name="messeg" placeholder="Повідомленя"></textarea>
+            </td>
+            <td>
+                <button type="submit" class="butt_green">Send</button>
+            </td>
+        </form>
+    </tr>
+
+</table>
+
+
+{% endblock %}

@@ -35,19 +35,22 @@
 {% block navigation %}
 
     {% if user.is_authenticated %}
+        <h1 id="mess">Результат пошуку:</h1>
 
         {% for l in list_user %}
 
-            <div class="group">
-                <table>
-                    <tr>
-                        <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
-                        <td width="100"><p id="mess">{{ l.0 }}</p></td>
-                        <td width="100"><p id="mess">id:{{ l.2 }}</p></td>
-                    </tr>
-                </table>
+            {% if l.0 != user.username %}
 
-            </div>
+                <div class="group">
+                    <table>
+                        <tr>
+                            <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
+                            <td width="100"><p id="mess">{{ l.0 }}</p></td>
+                            <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
+                        </tr>
+                    </table>
+                </div>
+            {% endif %}
 
         {% endfor %}
 
@@ -58,18 +61,6 @@
 
 
     {% else %}
-
-        <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">
-            {% csrf_token %}
-
-            <input type="text" class="table_basket1" name="username" id="username" placeholder="Ваш нікнейм">
-            <input type="email" class="table_basket1" name="email" id="email" placeholder="Електрона пошта">
-            <input type="password" class="table_basket1" name="password1" id="password1" placeholder="Пароль">
-            <input type="password" class="table_basket1" name="password2" id="password2" placeholder="Підтвердження">
-
-            <button type="submit" class="butt_green0">Зареєструватись</button>
-
-        </form>
 
     {% endif %}
 

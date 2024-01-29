@@ -23,19 +23,20 @@
         </div>
 
         <div class="div_search">
-            <table>
-                <tr>
-                    <td>
-                        <form method="POST" role="form" action="{% url 'search' id=0 %}">
-                            {% csrf_token %}
-                            <input type="text" class="search_form" name="search"  placeholder="Знайти">
-                            <button type="submit" class="butt_search">🔎</button>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-
-
+            {% if user.is_authenticated %}
+                <table>
+                    <tr>
+                        <td>
+                            <form method="POST" role="form" action="{% url 'search' id=0 %}">
+                                {% csrf_token %}
+                                <input type="text" class="search_form" name="search"  placeholder="Знайти">
+                                <button type="submit" class="butt_search">🔎</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            {% else %}
+            {% endif %}
         </div>
 
         <div class="login">
@@ -52,28 +53,19 @@
         <div class="post">
 
             <div class="div_form">
-                <table>
-                    <tr>
-                        <form method="POST" role="form" action="#">
-                            {% csrf_token %}
-                            <td width="300">
+                {% block messeg_form %}
 
-                                <textarea class="text_area" name="description" placeholder="Повідомленя"></textarea>
-                            </td>
-                            <td><button type="submit" class="butt_green">Send</button></td>
-                        </form>
-                    </tr>
 
-                </table>
+                {% endblock %}
+
 
             </div>
 
             <div class="div_messeg">
-               
-                <div class="messeg_l">
-                    <p id="mess">Привітю. Як справи?</p>
-                    <p id="time">16:25</p>
-                </div>
+                {% block messeg %}
+
+
+                {% endblock %}
 
             </div>
 

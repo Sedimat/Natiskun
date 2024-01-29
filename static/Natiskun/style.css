@@ -115,6 +115,19 @@ header {
 .navigation {
     background-color: #26292e;
     width: 400px;
+    overflow-y: scroll; /* Вертикальний скрол */
+    overflow-x: hidden; /* Приховуємо горизонтальний скрол */
+    scrollbar-width: thin; /* Задаємо товщину вертикального скролбара для браузерів на основі Mozilla (Firefox) */
+    scrollbar-color: #888 #f0f0f0; /* Колір вертикального скролбара для Firefox */
+}
+
+.navigation::-webkit-scrollbar {
+    width: 5px;
+}
+
+.navigation::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
 }
 
 .post {
@@ -184,8 +197,15 @@ header {
     color: white;
 }
 
+#mess1{
+    margin: 0px 10px 0px 10px;
+    font-family: cursive;
+    font-size: 16px;
+    color: #c6ccc8;
+}
+
 #time{
-    margin: 2px 5px 2px 360px;
+    margin: 2px 5px 2px 260px;
     font-family: sans-serif;
     font-size: 12px;
     color: white;
@@ -209,14 +229,15 @@ header {
     font-family: cursive;
     font-size: 16px;
     color: white;
-    margin: 2px 2px 2px 2px;
-    width: 190px;
+    padding: 0px;
+    margin: 2px 0px 2px 2px;
+    width: 193px;
     height: 30px
 }
 
 .butt_green0{
     padding: 5px 8px 5px 8px;
-    margin: 2px 2px 2px 270px;
+    margin: 2px 2px 2px 265px;
     border-radius: 5px;
     font-family: cursive;
     font-size: 14px;
