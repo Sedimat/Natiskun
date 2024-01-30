@@ -9,7 +9,7 @@
         <td><p id="mess">{{ user.username }}</p></td>
         <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
         {% if request.user.is_staff %}
-            <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
+        <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
         {% endif %}
     </tr>
 </table>
@@ -35,38 +35,62 @@
 {% block navigation %}
 
     {% if user.is_authenticated %}
-        <h1 id="mess">Результат пошуку:</h1>
+        {% for cont in list_cont %}
+            <a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
+                    <div class="group">
+                        <table>
+                            <tr id="test">
+                                <td width="60"><img class="avatar" src="{{ cont.0.url }}" style="width:60px;"></td>
+                                <td>
+                                    <table>
+                                        <tr id="test">
+                                            <td height="15"><p id="mess">{{ cont.1 }}</p></td>
+                                        </tr>
+                                        <tr id="test">
+                                            <td  height="20"><p id="mess1">{{ cont.2 }}</p></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </a>
+        {% endfor %}
 
-        {% for l in list_user %}
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block messeg %}
+    <div class="search_result">
+        {% if user.is_authenticated %}
+            <h1 id="mess">Результат пошуку:</h1>
+
+            {% for l in list_user %}
 
             {% if l.0 != user.username %}
 
-                <div class="group">
-                    <table>
-                        <tr>
-                            <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
-                            <td width="100"><p id="mess">{{ l.0 }}</p></td>
-                            <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
-                        </tr>
-                    </table>
-                </div>
-            {% endif %}
+            <div class="group1">
+                <table>
+                    <tr>
+                        <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
+                        <td width="100"><p id="mess">{{ l.0 }}</p></td>
+                        <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
+                    </tr>
+                </table>
+            </div>
+    {% endif %}
 
-        {% endfor %}
-
-<!--        <div class="group">-->
-<!--            <p id="mess">Вася Пупкін</p>-->
-
-<!--        </div>-->
+    {% endfor %}
 
 
     {% else %}
 
     {% endif %}
 
+    </div>
 
 {% endblock %}
 
-{% block content %}
-
-{% endblock %}

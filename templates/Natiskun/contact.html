@@ -9,8 +9,10 @@
         <td><p id="mess">{{ user.username }}</p></td>
         <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
         {% if request.user.is_staff %}
-        <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
-        <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
+            <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
+            <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
+            <td><button onclick="knopka()">Click</button></td>
+
         {% endif %}
     </tr>
 </table>
@@ -82,6 +84,7 @@
 
 {% for mes in messegs %}
 
+
     {% if mes.user_1 == user.username %}
         <div class="messeg_r">
             <p id="mess">{{ mes.user_1 }}</p>
@@ -92,7 +95,9 @@
         <div class="messeg_l">
             <p id="mess">{{ mes.user_1 }}</p>
             <p id="mess">{{ mes.messeg_1 }}</p>
-            <p id="time">{{ mes.timestamp }}</p>
+            <p id="time">{{ mes.timestamp|time:"H:i:s" }}</p>
+
+
         </div>
 
 
@@ -107,21 +112,24 @@
 
 {% block messeg_form %}
 
-<table>
-    <tr>
-        <form method="POST" role="form" action="{% url 'contact' name %}">
-            {% csrf_token %}
-            <td width="300">
+    {% if user.is_authenticated %}
 
-                <textarea class="text_area" name="messeg" placeholder="Повідомленя"></textarea>
-            </td>
-            <td>
-                <button type="submit" class="butt_green">Send</button>
-            </td>
-        </form>
-    </tr>
+    <table>
+        <tr>
+            <form method="POST" role="form" action="{% url 'contact' name %}">
+                {% csrf_token %}
+                <td width="300">
 
-</table>
+                    <textarea class="text_area" name="messeg" placeholder="Повідомленя"></textarea>
+                </td>
+                <td>
+                    <button type="submit" class="butt_green">Send</button>
+                </td>
+            </form>
+        </tr>
+
+    </table>
+    {% endif %}
 
 
 {% endblock %}

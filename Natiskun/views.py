@@ -1,5 +1,8 @@
+import datetime
+
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
 from .models import UserProfile, UserList, Messeg
@@ -9,6 +12,37 @@ import string
 
 
 # Create your views here.
+
+def list_messeg(user, name, x=0):
+    user_p = UserProfile.objects.get(id_user=user)
+    user1 = User.objects.get(username=name)
+    user_p1 = UserProfile.objects.get(id_user=user1)
+    key = ""
+    if user.id < user1.id:
+        key = f"{user_p.key}{user_p1.key}"
+    else:
+        key = f"{user_p1.key}{user_p.key}"
+
+    messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+    if x == 0:
+        return {"messegs": messegs}
+    else:
+        list_messeg = []
+        for m in messegs:
+            list_messeg.append([m.user_1, m.messeg_1, m.timestamp.strftime("%d %B %Y р. %H:%M")])
+        return {"messegs": list_messeg}
+
+
+def contact_list(user):
+    list_contact = UserList.objects.filter(id_user=user)
+    list_cont = []
+    for cont in list_contact:
+        user_p = UserProfile.objects.get(id_user=cont.list_user)
+        user_n = User.objects.get(username=cont.list_user)
+        list_cont.append([user_p.avatar, user_n.username, "Це тестове повідомленя"])
+
+    return {"list_cont": list_cont}
+
 
 def generate_random_string():
     letters = string.ascii_letters
@@ -34,14 +68,7 @@ def index(request):
         context.update({"user": user})
         context.update(U_Prof(request))
 
-        list_contact = UserList.objects.filter(id_user=user)
-        list_cont = []
-        for cont in list_contact:
-            user_p = UserProfile.objects.get(id_user=cont.list_user)
-            user_n = User.objects.get(username=cont.list_user)
-            list_cont.append([user_p.avatar,user_n.username,"Це тестове повідомленя"])
-
-        context.update({"list_cont": list_cont})
+        context.update(contact_list(user)) # отримуемо список контактів
 
     if request.method == "POST":
         search = request.POST.get('search')
@@ -72,6 +99,7 @@ def search(request, id=None):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
+        context.update(contact_list(user))  # отримуемо список контактів
 
     if id == 1:
         list_user = User.objects.all()
@@ -120,18 +148,7 @@ def contact(request, name=None):
         context.update({"list_cont": list_cont})
         context.update({"name": name})
 
-        user_p = UserProfile.objects.get(id_user=user)
-        user1 = User.objects.get(username=name)
-        user_p1 = UserProfile.objects.get(id_user=user1)
-        key = ""
-        if user.id < user1.id:
-            key = f"{user_p.key}{user_p1.key}"
-        else:
-            key = f"{user_p1.key}{user_p.key}"
-
-        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
-        context.update({"messegs": messegs})
-
+        context.update(list_messeg(user, name))
 
     if request.method == "POST":
         messeg = request.POST.get('messeg')
@@ -152,3 +169,13 @@ def contact(request, name=None):
 
 
     return render(request, 'Natiskun/contact.html', context=context)
+
+
+def get_data(request, name=None):
+    double_list_user = ["Привіт", "це", "текст", "з вюшки"]
+    context = {"list_user": double_list_user}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update(list_messeg(user, name,1))
+
+    return JsonResponse(context)
