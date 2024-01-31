@@ -12,6 +12,28 @@ import string
 
 
 # Create your views here.
+def list_contact(user):
+    list_contact = UserList.objects.filter(id_user=user)
+    list_cont = []
+    for cont in list_contact:
+        len_m = 0
+        user_p = UserProfile.objects.get(id_user=cont.list_user)
+        user_p1 = UserProfile.objects.get(id_user=user.id)
+        user_n = User.objects.get(username=cont.list_user)
+        key = ""
+        if user.id < user_n.id:
+            key = f"{user_p1.key}{user_p.key}"
+        else:
+            key = f"{user_p.key}{user_p1.key}"
+
+        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+        for m in messegs:
+            if user.username != m.user_1 and m.user_2 == "":
+                len_m += 1
+
+        list_cont.append([user_p.avatar, user_n.username, "Це тестове повідомленя", len_m])
+
+    return {"list_cont": list_cont}
 
 def list_messeg(user, name, x=0):
     user_p = UserProfile.objects.get(id_user=user)
@@ -23,13 +45,20 @@ def list_messeg(user, name, x=0):
     else:
         key = f"{user_p1.key}{user_p.key}"
 
-    messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+    messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:30]  # сортує по даті додавання та видає обмежену кількість
     if x == 0:
         return {"messegs": messegs}
     else:
         list_messeg = []
+        id_list = []
         for m in messegs:
-            list_messeg.append([m.user_1, m.messeg_1, m.timestamp.strftime("%d %B %Y р. %H:%M")])
+            list_messeg.append([m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M")])
+            if user.username != m.user_1:
+                id_list.append(m.id)
+
+        # Змінюємо статус на прочитані
+        Messeg.objects.filter(id__in=id_list).update(user_2=1)
+
         return {"messegs": list_messeg}
 
 
@@ -101,6 +130,9 @@ def search(request, id=None):
         context.update(U_Prof(request))
         context.update(contact_list(user))  # отримуемо список контактів
 
+    else:
+        return redirect('index')
+
     if id == 1:
         list_user = User.objects.all()
         double_list_user = []
@@ -138,17 +170,11 @@ def contact(request, name=None):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
-        list_contact = UserList.objects.filter(id_user=user)
-        list_cont = []
-        for cont in list_contact:
-            user_p = UserProfile.objects.get(id_user=cont.list_user)
-            user_n = User.objects.get(username=cont.list_user)
-            list_cont.append([user_p.avatar, user_n.username, "Це тестове повідомленя"])
 
-        context.update({"list_cont": list_cont})
+        context.update(list_contact(user)) # додаємо список контактів
         context.update({"name": name})
-
-        context.update(list_messeg(user, name))
+    else:
+        return redirect('index')
 
     if request.method == "POST":
         messeg = request.POST.get('messeg')
@@ -172,10 +198,10 @@ def contact(request, name=None):
 
 
 def get_data(request, name=None):
-    double_list_user = ["Привіт", "це", "текст", "з вюшки"]
-    context = {"list_user": double_list_user}
+    context = {}
     if request.user.username:
         user = User.objects.get(username=request.user.username)
+        context.update({"username": user.username})
         context.update(list_messeg(user, name,1))
 
     return JsonResponse(context)
