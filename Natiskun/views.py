@@ -27,11 +27,19 @@ def list_contact(user):
             key = f"{user_p.key}{user_p1.key}"
 
         messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+
+
         for m in messegs:
             if user.username != m.user_1 and m.user_2 == "":
                 len_m += 1
+        if len_m == 0:
+            len_m = ""
 
-        list_cont.append([user_p.avatar, user_n.username, "Це тестове повідомленя", len_m])
+            if messegs:
+                list_cont.append([str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}"])
+            else:
+                list_cont.append([str(user_p.avatar), user_n.username, "", len_m , f"/contact/{user_n.username}"])
+
 
     return {"list_cont": list_cont}
 
@@ -96,8 +104,6 @@ def index(request):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
-
-        context.update(contact_list(user)) # отримуемо список контактів
 
     if request.method == "POST":
         search = request.POST.get('search')
@@ -170,8 +176,6 @@ def contact(request, name=None):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
-
-        context.update(list_contact(user)) # додаємо список контактів
         context.update({"name": name})
     else:
         return redirect('index')
@@ -203,5 +207,14 @@ def get_data(request, name=None):
         user = User.objects.get(username=request.user.username)
         context.update({"username": user.username})
         context.update(list_messeg(user, name,1))
+        context.update(list_contact(user))
 
+    return JsonResponse(context)
+
+
+def index_js(request):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update(list_contact(user))
     return JsonResponse(context)

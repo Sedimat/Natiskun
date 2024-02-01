@@ -10,5 +10,5 @@ urlpatterns = [
     path("login", LoginView.as_view(), name='login'),
     path("logout", views.logout_view, name='logout'),
     path("get_data/<str:name>", views.get_data, name='get_data'),
-
+    path("index_js", views.index_js, name='index_js'),
 ]

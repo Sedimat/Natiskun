@@ -40,31 +40,6 @@
 
     {% if user.is_authenticated %}
 
-                {% for cont in list_cont %}
-                <a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
-                    <div class="group">
-                        <table>
-                            <tr id="test">
-                                <td width="60"><img class="avatar" src="{{ cont.0.url }}" style="width:60px;"></td>
-                                <td>
-                                    <table>
-                                        <tr id="test">
-                                            <td height="15"><p id="mess">{{ cont.1 }}</p></td>
-                                        </tr>
-                                        <tr id="test">
-                                            <td  height="20"><p id="mess1">{{ cont.2 }}</p></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td height="15"><p id="mess">{{ cont.3 }} нових</p></td>
-                            </tr>
-                        </table>
-                    </div>
-                </a>
-
-                {% endfor %}
-
-
     {% else %}
 
         <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">
