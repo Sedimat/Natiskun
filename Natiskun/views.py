@@ -12,9 +12,10 @@ import string
 
 
 # Create your views here.
-def list_contact(user):
+def list_contact(user, x=None):
     list_contact = UserList.objects.filter(id_user=user)
     list_cont = []
+    list_meseg_new = []
     for cont in list_contact:
         len_m = 0
         user_p = UserProfile.objects.get(id_user=cont.list_user)
@@ -26,24 +27,29 @@ def list_contact(user):
         else:
             key = f"{user_p.key}{user_p1.key}"
 
-        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+        if x == 1:
+            messegs = Messeg.objects.filter(key=key, user_2="", user_1=user_n.username).order_by("-timestamp")  # сортує по даті додавання
+            list_meseg_new.append([user_n.username,len(messegs)])
 
 
-        for m in messegs:
-            if user.username != m.user_1 and m.user_2 == "":
-                len_m += 1
-        if len_m == 0:
-            len_m = ""
+        else:
+            messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
+            for m in messegs:
+                if user.username != m.user_1 and m.user_2 == "":
+                    len_m += 1
 
             if messegs:
                 list_cont.append([str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}"])
             else:
                 list_cont.append([str(user_p.avatar), user_n.username, "", len_m , f"/contact/{user_n.username}"])
 
+    if x == 1:
+        return {"list_meseg_new": list_meseg_new}
 
-    return {"list_cont": list_cont}
+    else:
+        return {"list_cont": list_cont}
 
-def list_messeg(user, name, x=0):
+def list_messeg(user, name, x=0, len=30):
     user_p = UserProfile.objects.get(id_user=user)
     user1 = User.objects.get(username=name)
     user_p1 = UserProfile.objects.get(id_user=user1)
@@ -53,7 +59,7 @@ def list_messeg(user, name, x=0):
     else:
         key = f"{user_p1.key}{user_p.key}"
 
-    messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:30]  # сортує по даті додавання та видає обмежену кількість
+    messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:len]  # сортує по даті додавання та видає обмежену кількість
     if x == 0:
         return {"messegs": messegs}
     else:
@@ -136,6 +142,7 @@ def search(request, id=None):
         context.update(U_Prof(request))
         context.update(contact_list(user))  # отримуемо список контактів
 
+
     else:
         return redirect('index')
 
@@ -211,10 +218,24 @@ def get_data(request, name=None):
 
     return JsonResponse(context)
 
+def get_data0(request, name=None, id=None):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update(list_messeg(user, name, 1, id))
+    return JsonResponse(context)
+
 
 def index_js(request):
     context = {}
     if request.user.username:
         user = User.objects.get(username=request.user.username)
         context.update(list_contact(user))
+    return JsonResponse(context)
+
+def new_mess_js(request):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update(list_contact(user, x=1))
     return JsonResponse(context)
