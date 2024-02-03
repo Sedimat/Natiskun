@@ -1,5 +1,4 @@
 import datetime
-
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -9,9 +8,20 @@ from .models import UserProfile, UserList, Messeg
 from django.db.models import Q
 import random
 import string
+import re
+import json
 
 
-# Create your views here.
+def extract_image_links(text):
+    # Регулярний вираз для виявлення посилань на зображення
+    image_pattern = re.compile(r'\b(?:https?://\S+\.(?:png|jpg|jpeg|gif|bmp))\b', re.IGNORECASE)
+
+    image_links = re.findall(image_pattern, text)
+
+    text_without_images = re.sub(image_pattern, '', text)
+    return [text_without_images, image_links]
+
+
 def list_contact(user, x=None):
     list_contact = UserList.objects.filter(id_user=user)
     list_cont = []
@@ -49,7 +59,7 @@ def list_contact(user, x=None):
     else:
         return {"list_cont": list_cont}
 
-def list_messeg(user, name, x=0, len=30):
+def list_messeg(user, name, x=0, len=40):
     user_p = UserProfile.objects.get(id_user=user)
     user1 = User.objects.get(username=name)
     user_p1 = UserProfile.objects.get(id_user=user1)
@@ -66,7 +76,12 @@ def list_messeg(user, name, x=0, len=30):
         list_messeg = []
         id_list = []
         for m in messegs:
-            list_messeg.append([m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M")])
+            img_list = json.loads(m.messeg_2)
+            if m.user_2 == "1":
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M")+" ✅"], img_list ])
+            else:
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉"], img_list ])
+
             if user.username != m.user_1:
                 id_list.append(m.id)
 
@@ -82,7 +97,7 @@ def contact_list(user):
     for cont in list_contact:
         user_p = UserProfile.objects.get(id_user=cont.list_user)
         user_n = User.objects.get(username=cont.list_user)
-        list_cont.append([user_p.avatar, user_n.username, "Це тестове повідомленя"])
+        list_cont.append([user_p.avatar, user_n.username, ""])
 
     return {"list_cont": list_cont}
 
@@ -190,6 +205,10 @@ def contact(request, name=None):
     if request.method == "POST":
         messeg = request.POST.get('messeg')
         if messeg:
+            # Закодовуєм список з посиланнями на зображення
+            list_mess = extract_image_links(messeg)
+            json_list_mess = json.dumps(list_mess[1])
+
             user = User.objects.get(username=request.user.username)
             user_p = UserProfile.objects.get(id_user=user)
             user1 = User.objects.get(username=name)
@@ -201,7 +220,7 @@ def contact(request, name=None):
             else:
                 key = f"{user_p1.key}{user_p.key}"
 
-            mess = Messeg(key=key, user_1=user.username, messeg_1=messeg)
+            mess = Messeg(key=key, user_1=user.username, messeg_1=list_mess[0], messeg_2=json_list_mess)
             mess.save()
 
 

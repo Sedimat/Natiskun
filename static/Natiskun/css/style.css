@@ -141,10 +141,20 @@ header {
     flex-direction: column-reverse;
     width: 850px;
     height: calc(100vh - 1px);
-    overflow-y: hidden; /* Приховуємо стандартний вертикальний скрол */
-    overflow-x: hidden; /* Приховуємо стандартний горизонтальний скрол */
-    scrollbar-width: thin; /* Задаємо товщину вертикального скролбара для браузерів на основі Mozilla (Firefox) */
-    scrollbar-color: transparent transparent; /* Колір вертикального скролбара для Firefox, transparent для того, щоб був невидимий */
+    overflow-y: auto; /* Замініть scroll на auto, щоб вивести скрол тільки при потребі */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: grey; /* Колір вертикального скролбара для Firefox */
+
+    /* Стилізація WebKit (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        width: 6px; /* Ширина скролбара */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: grey; /* Колір пальця скролбара */
+        border-radius: 3px; /* Закруглення країв пальця скролбара */
+    }
 }
 
 .group {
@@ -174,17 +184,17 @@ header {
 }
 
 .messeg_l {
-    background-color: #105ce0;
+    background-color: #2a3c5c;
     width: 400px;
-    margin: 5px 10px 5px 10px;
+    margin: 2px 10px 0px 10px;
     border-radius: 10px 10px 10px 0px;
 
 }
 
 .messeg_r {
-    background-color: #105ce0;
+    background-color: #2a3c5c;
     width: 400px;
-    margin: 5px 10px 5px 430px;
+    margin: 2px 10px 0px 430px;
     border-radius: 10px 10px 0px 10px;
 
 }
@@ -196,6 +206,13 @@ header {
     color: white;
 }
 
+#img_post{
+    margin: 5px 5px 0px 5px;
+    width: 390px;
+    border-radius: 10px;
+
+}
+
 #mess1{
     margin: 0px 10px 0px 10px;
     font-family: cursive;
@@ -204,7 +221,7 @@ header {
 }
 
 #time{
-    margin: 2px 5px 2px 360px;
+    margin: 2px 5px 2px 345px;
     font-family: sans-serif;
     font-size: 12px;
     color: white;

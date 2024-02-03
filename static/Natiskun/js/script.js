@@ -1,5 +1,5 @@
 
-function dodavannya(user, text, time, side, place) {
+function dodavannya(user, text, time, side, place, img) {
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
     var parentElement = document.querySelector('.div_messeg');
 
@@ -15,6 +15,20 @@ function dodavannya(user, text, time, side, place) {
     var userElement = document.createElement('p');
     userElement.id = 'mess';
     userElement.textContent = user;
+    newDivElement.appendChild(userElement);
+
+    if (img.length > 0) {
+        console.log(img);
+        for (let i = 0; i < img.length; i++) {
+            var imgElement = document.createElement('img');
+            imgElement.id = 'img_post';
+            imgElement.src = img[i];
+            imgElement.alt = 'Image';
+
+            // Додаємо imgElement до нового div
+            newDivElement.appendChild(imgElement);
+        }
+    }
 
     var messageElement = document.createElement('p');
     messageElement.id = 'mess';
@@ -25,7 +39,6 @@ function dodavannya(user, text, time, side, place) {
     timeElement.textContent = time;
 
     // Додаємо нові елементи до нового div
-    newDivElement.appendChild(userElement);
     newDivElement.appendChild(messageElement);
     newDivElement.appendChild(timeElement);
 
@@ -120,11 +133,12 @@ function knopka(name, link) {
             add_cont(data.list_cont[i], name)
         }
         for(let i = 0; i < data.messegs.length; i++){
-            if (data.messegs[i][0] === data.username) {
-            dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"r","up")
+
+            if (data.messegs[i][0][0] === data.username) {
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"r","up",data.messegs[i][1])
             }
             else {
-            dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"","up")
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"","up",data.messegs[i][1])
             }
         }
 
@@ -156,6 +170,9 @@ function link_name(){
 // асинхрона функція
 
 async function asyncFunction() {
+    // змінюємо розмір контенту
+    edit_height()
+
     fetch(`/new_mess_js`)  // Вказуємо URL для вашого Django view
         .then(response => response.json())
         .then(data => {
@@ -173,10 +190,10 @@ async function asyncFunction() {
                               .then(data => {
                               for(let i = 0; i < data.messegs.length; i++){
                                   if (data.messegs[i][0] === data.username) {
-                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"r","")
+                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"r","",data.messegs[i][1])
                                   }
                                   else {
-                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"","")
+                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"","",data.messegs[i][1])
                                   }
                               }
 
@@ -206,11 +223,28 @@ function runEverySecond() {
     }, 3000); // 1000 мілісекунд = 1 секунда
 }
 
+// змінює висоту контента під екран
+function edit_height() {
+    // var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    // console.log("Ширина екрану: " + screenWidth);
+    // console.log("Висота екрану: " + screenHeight);
+
+    var content = document.querySelector('.content');
+    // Встановити висоту для .content
+    content.style.height = (screenHeight - 70) + 'px';
+
+    var content = document.querySelector('.div_messeg');
+    // Встановити висоту для .content
+    content.style.height = (screenHeight - 140) + 'px';
+    }
+
 
 // Запускає код після завантаженя сторінки
 document.addEventListener("DOMContentLoaded", handler)
 
 function handler(event) {
+
     var result = link_name();
     var name = result[0];
     var link = result[1];
@@ -241,19 +275,19 @@ function handler(event) {
 }
 
 
-// функції скролу
-var divMesseg = document.querySelector('.div_messeg');
-
-divMesseg.addEventListener('wheel', function (e) {
-    // Швидкість прокрутки, можна налаштувати
-    var scrollSpeed = 0.5;
-
-    // Прокручуємо вгору або вниз відповідно до напрямку колеса миші
-    divMesseg.scrollTop += e.deltaY * scrollSpeed;
-
-    // Зупиняємо подальшу обробку події колеса миші
-    e.preventDefault();
-});
+//// функції скролу
+//var divMesseg = document.querySelector('.div_messeg');
+//
+//divMesseg.addEventListener('wheel', function (e) {
+//    // Швидкість прокрутки, можна налаштувати
+//    var scrollSpeed = 0.5;
+//
+//    // Прокручуємо вгору або вниз відповідно до напрямку колеса миші
+//    divMesseg.scrollTop += e.deltaY * scrollSpeed;
+//
+//    // Зупиняємо подальшу обробку події колеса миші
+//    e.preventDefault();
+//});
 
 
 var divMesseg1 = document.querySelector('.navigation');
