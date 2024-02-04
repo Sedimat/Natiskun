@@ -1,10 +1,17 @@
 
-function dodavannya(user, text, time, side, place, img) {
+// лічильник повідомлень
+var count = 0;
+
+
+function dodavannya(user, text, time, side, place, img, link) {
+    count++
+    console.log(count)
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
     var parentElement = document.querySelector('.div_messeg');
 
     // Створюємо новий елемент div
     var newDivElement = document.createElement('div');
+
     if(side === "r"){
     newDivElement.classList.add('messeg_r');
     }else{
@@ -18,8 +25,8 @@ function dodavannya(user, text, time, side, place, img) {
     newDivElement.appendChild(userElement);
 
     if (img.length > 0) {
-        console.log(img);
         for (let i = 0; i < img.length; i++) {
+
             var imgElement = document.createElement('img');
             imgElement.id = 'img_post';
             imgElement.src = img[i];
@@ -30,16 +37,32 @@ function dodavannya(user, text, time, side, place, img) {
         }
     }
 
+    if (link.length > 0) {
+        for (let i = 0; i < link.length; i++) {
+            var link_name = link[i]
+            if (link[i].length > 50){
+                link_name = link[i].slice(0, 50) + "..."
+            }
+            var linkElement = document.createElement('a');
+            linkElement.href = link[i];
+            linkElement.id = 'link'; // Додаємо клас, якщо потрібно
+            linkElement.textContent = link_name;
+            linkElement.style.display = "block";
+
+            newDivElement.appendChild(linkElement);
+        }
+    }
+
     var messageElement = document.createElement('p');
     messageElement.id = 'mess';
     messageElement.textContent = text;
+
+    newDivElement.appendChild(messageElement);
 
     var timeElement = document.createElement('p');
     timeElement.id = 'time';
     timeElement.textContent = time;
 
-    // Додаємо нові елементи до нового div
-    newDivElement.appendChild(messageElement);
     newDivElement.appendChild(timeElement);
 
     if(place === "up"){
@@ -60,6 +83,13 @@ function add_cont(list_c, user) {
   link.href = list_c[4];
   link.style.textDecoration = 'none';
   var numb = ""
+  var messeg = ""
+  if (list_c[2].length > 25) {
+        messeg = list_c[2].slice(0, 25) + "..."
+  }else{
+        messeg = list_c[2]
+  }
+
   if (list_c[3] > 0) {
     var numb = list_c[3]
   }
@@ -77,7 +107,7 @@ function add_cont(list_c, user) {
                             <td height="15"><p id="mess">${list_c[1]}</p></td>
                         </tr>
                         <tr id="test">
-                            <td height="20"><p id="mess1">${list_c[2]}</p></td>
+                            <td height="20"><p id="mess1">${messeg}</p></td>
                         </tr>
                     </table>
                 </td>
@@ -99,7 +129,7 @@ function add_cont(list_c, user) {
                             <td height="15"><p id="mess">${list_c[1]}</p></td>
                         </tr>
                         <tr id="test">
-                            <td height="20"><p id="mess1">${list_c[2]}</p></td>
+                            <td height="20"><p id="mess1">${messeg}</p></td>
                         </tr>
                     </table>
                 </td>
@@ -126,7 +156,7 @@ function dell_messeg() {
 function knopka(name, link) {
 
     if (link === "contact") {
-        fetch(`/get_data/${name}`)  // Вказуємо URL для вашого Django view
+        fetch(`/get_data/${name}/0`)  // Вказуємо URL для вашого Django view
         .then(response => response.json())
         .then(data => {
         for(let i = 0; i < data.list_cont.length; i++){
@@ -135,10 +165,10 @@ function knopka(name, link) {
         for(let i = 0; i < data.messegs.length; i++){
 
             if (data.messegs[i][0][0] === data.username) {
-            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"r","up",data.messegs[i][1])
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"r","up",data.messegs[i][1],data.messegs[i][2])
             }
             else {
-            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"","up",data.messegs[i][1])
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"","up",data.messegs[i][1],data.messegs[i][2])
             }
         }
 
@@ -168,7 +198,6 @@ function link_name(){
 
 
 // асинхрона функція
-
 async function asyncFunction() {
     // змінюємо розмір контенту
     edit_height()
@@ -185,15 +214,18 @@ async function asyncFunction() {
 
                           if (link === "contact" && name === data.list_meseg_new[i][0]) {
 
-                              fetch(`/get_data0/${name}/${data.list_meseg_new[i][1]}`)  // Вказуємо URL для вашого Django view
+                              fetch(`/get_data0/${name}/${data.list_meseg_new[i][1]}`)
+                              // Вказуємо URL для вашого Django view
                               .then(response => response.json())
                               .then(data => {
                               for(let i = 0; i < data.messegs.length; i++){
-                                  if (data.messegs[i][0] === data.username) {
-                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"r","",data.messegs[i][1])
+                                  if (data.messegs[i][0][0] === data.username) {
+                                  dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"r","",
+                                  data.messegs[i][1],data.messegs[i][2])
                                   }
                                   else {
-                                  dodavannya(data.messegs[i][0], data.messegs[i][1], data.messegs[i][2],"","",data.messegs[i][1])
+                                  dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"","",
+                                  data.messegs[i][1],data.messegs[i][2])
                                   }
                               }
 
@@ -232,7 +264,7 @@ function edit_height() {
 
     var content = document.querySelector('.content');
     // Встановити висоту для .content
-    content.style.height = (screenHeight - 70) + 'px';
+    content.style.height = (screenHeight - 60) + 'px';
 
     var content = document.querySelector('.div_messeg');
     // Встановити висоту для .content
@@ -304,16 +336,101 @@ divMesseg1.addEventListener('wheel', function (e) {
 });
 
 
-// Запустіть функцію
-// runEverySecond();
+// Запускаеться при нажаті ентеру та відправля повідомленя
+document.getElementById('myTextarea').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();  // Заборона вставляння нового рядка
+        var textarea = document.getElementById('myTextarea');
+        var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        console.log(textarea.value);
 
+        var result = link_name();
+        var name = result[0];
+        var link = result[1];
+        var link0 = result[2];
+
+        var data = {
+            messeg: textarea.value,
+            name: name,
+        };
+
+        var formData = new URLSearchParams();
+
+        for (const [key, value] of Object.entries(data)) {
+            formData.append(key, value);
+        }
+
+        fetch('/post_mess', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+            },
+
+            body: formData.toString(),
+        })
+        .then(response => response.json())
+        .then(data => {
+            for(let i = 0; i < data.messegs.length; i++){
+                console.log(data.username)
+                console.log(data.messegs[i][0])
+
+                if (data.messegs[i][0][0] === data.username) {
+                dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2]
+                ,"r","",data.messegs[i][1],data.messegs[i][2])
+                }
+                else {
+                dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2]
+                ,"","",data.messegs[i][1],data.messegs[i][2])
+                }
+        }
+
+        });
+
+        textarea.value = '';  // Після відправлення очистіть поле
+    }
+});
+
+
+
+// реагує на кінець скролу повідомлень та додає старі повідомленя
+var divMesseg = document.querySelector('.div_messeg');
+
+divMesseg.addEventListener('scroll', function() {
+
+    var down = divMesseg.scrollHeight - divMesseg.clientHeight - 50
+//    console.log(divMesseg.scrollTop,-down);
+    if (divMesseg.scrollTop < -down ) {
+        console.log('Досягнуто нижньої границі', count);
+
+        var result = link_name();
+        var name = result[0];
+        var link = result[1];
+        var link0 = result[2];
+
+        if (link === "contact") {
+        fetch(`/get_data/${name}/${count}`)  // Вказуємо URL для вашого Django view
+        .then(response => response.json())
+        .then(data => {
+        for(let i = 0; i < data.messegs.length; i++){
+
+            if (data.messegs[i][0][0] === data.username) {
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2]
+            ,"r","up",data.messegs[i][1],data.messegs[i][2])
+            }
+            else {
+            dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2]
+            ,"","up",data.messegs[i][1],data.messegs[i][2])
+            }
+        }
+
+        })
+
+        .catch(error => {
+        console.error('Помилка при отриманні даних:', error);
+        });
+        }
+    }
+});
 
 //alert(data.list_user);
-
-
-
-//if (link === "contact") {
-//
-//} else {
-//
-//}

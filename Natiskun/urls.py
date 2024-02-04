@@ -9,8 +9,9 @@ urlpatterns = [
     path("contact/<str:name>", views.contact, name="contact"),
     path("login", LoginView.as_view(), name='login'),
     path("logout", views.logout_view, name='logout'),
-    path("get_data/<str:name>", views.get_data, name='get_data'),
+    path("get_data/<str:name>/<int:id>", views.get_data, name='get_data'),
     path("get_data0/<str:name>/<int:id>", views.get_data0, name='get_data0'),
     path("index_js", views.index_js, name='index_js'),
     path("new_mess_js", views.new_mess_js, name='new_mess_js'),
+    path("post_mess", views.post_mess, name='post_mess'),
 ]

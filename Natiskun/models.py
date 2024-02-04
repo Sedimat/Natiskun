@@ -31,9 +31,10 @@ class UserList(models.Model):
 class Messeg(models.Model):
     key = models.TextField(max_length=16, verbose_name="Ключ")
     user_1 = models.TextField(blank=True, verbose_name="Користувач 1")
-    user_2 = models.TextField(blank=True, verbose_name="Користувач 2")
+    user_2 = models.TextField(blank=True, verbose_name="Статус чи отримав другий користувач")
     messeg_1 = models.TextField(blank=True, verbose_name="Повідомленя 1")
-    messeg_2 = models.TextField(blank=True, verbose_name="Повідомленя 2")
+    messeg_2 = models.TextField(blank=True, verbose_name="Посилання Зображеня")
+    messeg_3 = models.TextField(blank=True, verbose_name="Посилання")
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

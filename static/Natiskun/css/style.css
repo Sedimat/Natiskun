@@ -105,7 +105,7 @@ header {
 
 .content {
     display: flex;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 60px);
     background-color: black;
     margin: auto;
     width: 1250px;
@@ -226,6 +226,14 @@ header {
     font-size: 12px;
     color: white;
 }
+
+#link{
+    margin: 2px 10px 2px 10px;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #e3e094;
+}
+
 .text_area{
     border: none;
     resize: none;

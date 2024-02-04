@@ -57,14 +57,11 @@
 
     <table>
         <tr>
-            <form method="POST" role="form" action="{% url 'contact' name %}">
+            <form method="POST" role="form" action="#">
                 {% csrf_token %}
                 <td width="300">
 
-                    <textarea class="text_area" name="messeg" placeholder="Повідомленя"></textarea>
-                </td>
-                <td>
-                    <button type="submit" class="butt_green">Send</button>
+                    <textarea id="myTextarea" class="text_area" name="messeg" placeholder="Повідомленя"></textarea>
                 </td>
             </form>
         </tr>
