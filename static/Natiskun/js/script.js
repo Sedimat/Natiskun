@@ -335,9 +335,10 @@ divMesseg1.addEventListener('wheel', function (e) {
     e.preventDefault();
 });
 
-
+var myTextarea = document.getElementById('myTextarea');
+if (myTextarea) {
 // Запускаеться при нажаті ентеру та відправля повідомленя
-document.getElementById('myTextarea').addEventListener('keydown', function(e) {
+    myTextarea.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();  // Заборона вставляння нового рядка
         var textarea = document.getElementById('myTextarea');
@@ -389,8 +390,8 @@ document.getElementById('myTextarea').addEventListener('keydown', function(e) {
 
         textarea.value = '';  // Після відправлення очистіть поле
     }
-});
-
+    });
+    }
 
 
 // реагує на кінець скролу повідомлень та додає старі повідомленя
@@ -398,7 +399,7 @@ var divMesseg = document.querySelector('.div_messeg');
 
 divMesseg.addEventListener('scroll', function() {
 
-    var down = divMesseg.scrollHeight - divMesseg.clientHeight - 50
+    var down = divMesseg.scrollHeight - divMesseg.clientHeight - 10
 //    console.log(divMesseg.scrollTop,-down);
     if (divMesseg.scrollTop < -down ) {
         console.log('Досягнуто нижньої границі', count);

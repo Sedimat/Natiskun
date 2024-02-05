@@ -7,7 +7,8 @@
     <tr>
         <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
         <td><p id="mess">{{ user.username }}</p></td>
-        <td><a href="{% url 'logout' %}" class="butt_red">Вийти</a></td>
+        <td><a href="{% url 'logout' %}" class="butt_red" onclick="return confirm('Ви впевнені, що хочете вийти?')"
+            >Вийти</a></td>
 
         {% if request.user.is_staff %}
             <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>

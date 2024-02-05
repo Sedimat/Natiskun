@@ -68,6 +68,7 @@ def list_contact(user, x=None):
         return {"list_cont": list_cont}
 
 def list_messeg(user, name, x=0, len=10, add=0):
+    print(add)
     user_p = UserProfile.objects.get(id_user=user)
     user1 = User.objects.get(username=name)
     user_p1 = UserProfile.objects.get(id_user=user1)
