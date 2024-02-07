@@ -199,8 +199,21 @@ def search(request, id=None):
 def add(request, id=None):
     user = User.objects.get(username=request.user.username)
     user_contact = User.objects.get(id=id)
-    u_list = UserList(id_user=user, list_user=user_contact, status=1)
-    u_list.save()
+
+    user_list = UserList.objects.filter(id_user=user)
+    list_name = []
+    user_list1 = UserList.objects.filter(id_user=user_contact)
+    list_name1 = []
+    for us in user_list1:
+        list_name1.append(str(us.list_user))
+    for us in user_list:
+        list_name.append(str(us.list_user))
+    if user_contact.username not in list_name:
+        u_list = UserList(id_user=user, list_user=user_contact, status=1)
+        u_list.save()
+    if user.username not in list_name1:
+        u_list1 = UserList(id_user=user_contact, list_user=user, status=1)
+        u_list1.save()
     return redirect('index')
 
 
@@ -312,3 +325,13 @@ def post_mess(request):
             context.update(list_messeg(user, name, 1, 1))
 
     return JsonResponse(context)
+
+
+def user(request):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update({"user": user})
+        context.update(U_Prof(request))
+
+    return render(request, 'Natiskun/user.html', context=context)

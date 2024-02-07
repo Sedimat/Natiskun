@@ -44,4 +44,31 @@ class Messeg(models.Model):
         verbose_name = "Повідомлення"
         verbose_name_plural = "Повідомлення"
 
+class Group(models.Model):
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")
+    name = models.CharField(max_length=40, verbose_name="Назва")
+    description = models.TextField(blank=True, verbose_name="Опис")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Група та її власник: {self.id_user}'
+
+    class Meta:
+        verbose_name = "Група"
+        verbose_name_plural = "Групи"
+
+class GroupMesseg(models.Model):
+    id_group = models.ForeignKey(Group, on_delete=models.CASCADE,verbose_name="Користувач")
+    messeg_1 = models.TextField(blank=True, verbose_name="Повідомленя 1")
+    messeg_2 = models.TextField(blank=True, verbose_name="Посилання Зображеня")
+    messeg_3 = models.TextField(blank=True, verbose_name="Посилання")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Повідомлення'
+
+    class Meta:
+        verbose_name = "Повідомлення"
+        verbose_name_plural = "Повідомлення"
+
 

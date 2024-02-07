@@ -5,7 +5,6 @@ var count = 0;
 
 function dodavannya(user, text, time, side, place, img, link) {
     count++
-    console.log(count)
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
     var parentElement = document.querySelector('.div_messeg');
 
@@ -335,6 +334,8 @@ divMesseg1.addEventListener('wheel', function (e) {
     e.preventDefault();
 });
 
+
+// Додаваня нового повідомленя та повертаєм повідомлення
 var myTextarea = document.getElementById('myTextarea');
 if (myTextarea) {
 // Запускаеться при нажаті ентеру та відправля повідомленя
@@ -385,26 +386,15 @@ if (myTextarea) {
                 ,"","",data.messegs[i][1],data.messegs[i][2])
                 }
         }
-
         });
-
         textarea.value = '';  // Після відправлення очистіть поле
     }
     });
-    }
+}
 
-
-// реагує на кінець скролу повідомлень та додає старі повідомленя
-var divMesseg = document.querySelector('.div_messeg');
-
-divMesseg.addEventListener('scroll', function() {
-
-    var down = divMesseg.scrollHeight - divMesseg.clientHeight - 10
-//    console.log(divMesseg.scrollTop,-down);
-    if (divMesseg.scrollTop < -down ) {
-        console.log('Досягнуто нижньої границі', count);
-
-        var result = link_name();
+// додає нові повідомленя
+function add_messeg(){
+    var result = link_name();
         var name = result[0];
         var link = result[1];
         var link0 = result[2];
@@ -431,7 +421,42 @@ divMesseg.addEventListener('scroll', function() {
         console.error('Помилка при отриманні даних:', error);
         });
         }
-    }
+
+}
+
+
+
+// реагує на кінець скролу повідомлень та додає старі повідомленя
+var divMesseg = document.querySelector('.div_messeg');
+
+divMesseg.addEventListener('scroll', function() {
+    setTimeout(function(){
+        var down = divMesseg.scrollHeight - divMesseg.clientHeight - 10;
+        console.log(divMesseg.scrollTop, -down);
+
+        if (divMesseg.scrollTop < -down) {
+            console.log('Досягнуто нижньої границі', count);
+            var test = divMesseg.scrollTop;
+
+            add_messeg()
+
+//        divMesseg.style.overflowY = 'hidden';
+//        divMesseg.style.overflowY = 'auto';
+
+        divMesseg.scrollTop = test;
+        }
+    }, 50);
 });
+
+
+//                divMesseg.style.overflow = 'hidden';
+//
+//        requestAnimationFrame(function() {
+//            setTimeout(function() {
+//                divMesseg.style.overflowY = 'auto';
+//            }, 10);
+//        });
+
+
 
 //alert(data.list_user);

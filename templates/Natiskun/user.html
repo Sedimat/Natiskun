@@ -7,7 +7,12 @@
     <tr>
         <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
         <td><a href="{% url 'user' %}" id="user" style="text-decoration: none;">{{ user.username }}</a></td>
-
+        <td><a href="{% url 'logout' %}" class="butt_red" onclick="return confirm('Ви впевнені, що хочете вийти?')"
+            >Вийти</a></td>
+        {% if request.user.is_staff %}
+        <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
+        <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
+        {% endif %}
     </tr>
 </table>
 
@@ -63,33 +68,41 @@
 {% endblock %}
 
 {% block messeg %}
-    <div class="search_result">
-        {% if user.is_authenticated %}
-            <h1 id="mess">Результат пошуку:</h1>
+<div class="search_result">
+<!--    <p id="mess">1</p>-->
+    <div class="form_group_add">
+        <form method="POST" role="form" action="{% url 'login' %}">
+                {% csrf_token %}
+            <input type="text" class="group_form" name="name" placeholder="Назва вашої групи">
+            <textarea class="text_area_group" name="description" placeholder="Опис вашої групи"></textarea>
+            <button type="submit" class="butt_green">Створити</button>
+        </form>
+    </div>
 
-            {% for l in list_user %}
-
-            {% if l.0 != user.username %}
-
-            <div class="group1">
-                <table>
-                    <tr>
-                        <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
-                        <td width="100"><p id="mess">{{ l.0 }}</p></td>
-                        <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
-                    </tr>
-                </table>
-            </div>
-    {% endif %}
-
-    {% endfor %}
-
-
-    {% else %}
-
-    {% endif %}
+    <div class="group_list">
+        <div class="group0" ">
+        <table>
+            <tr id="test">
+                <td width="60"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:60px;"></td>
+                <td>
+                    <table  width="250">
+                        <tr id="test">
+                            <td height="15"><p id="mess">Назва групи</p></td>
+                        </tr>
+                        <tr id="test">
+                            <td height="20"><p id="mess1">Остане повідомлення</p></td>
+                        </tr>
+                    </table>
+                </td>
+                <td height="15"><p id="mess" >5</p></td>
+            </tr>
+        </table>
+    </div>
+        <div class="group0" style="background: url('/media/fon.jpg')">
+        </div>
 
     </div>
 
+</div>
 {% endblock %}
 

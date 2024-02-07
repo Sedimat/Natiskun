@@ -7,6 +7,7 @@ urlpatterns = [
     path('search/<int:id>', views.search, name='search'),
     path('add/<int:id>', views.add, name='add'),
     path("contact/<str:name>", views.contact, name="contact"),
+    path("user", views.user, name="user"),
     path("login", LoginView.as_view(), name='login'),
     path("logout", views.logout_view, name='logout'),
     path("get_data/<str:name>/<int:id>", views.get_data, name='get_data'),

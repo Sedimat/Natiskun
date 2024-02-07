@@ -54,6 +54,51 @@ header {
     height: 70px
 
 }
+.form_group_add{
+    float: left;
+    margin: 20px 0px 20px 20px;
+    padding: 10px;
+    width: 320px;
+    border-radius: 10px;
+    background-color: #26292e;
+}
+.group_list{
+    float: right;
+    margin: 20px 20px 20px 0px;
+    padding: 10px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: #26292e;
+
+}
+.group_form{
+    border: none;
+    background-color: #434647;
+    font-family: cursive;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    margin: 10px 0px 10px 0px;
+    padding: 0px 0px 0px 10px;
+    width: 300px;
+    height: 40px;
+}
+
+.text_area_group{
+    border: none;
+    resize: none;
+    width: 300px;
+    height: 150px;
+    background-color: #434647;
+    border-radius: 10px;
+    margin: 0px 0px 10px 0px;
+    padding: 10px 0px 0px 10px;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+}
+
+
 .log_form{
     border: none;
     background-color: #434647;
@@ -157,12 +202,20 @@ header {
     }
 }
 
-.group {
+.group{
     border-radius: 10px;
     background-color: #062b66;
     margin: 5px;
     width: 390px;
     height: 70px;
+
+}
+.group0{
+    border-radius: 10px;
+    background-color: #062b66;
+    margin: 5px;
+    width: 390px;
+    height: 100px;
 
 }
 
@@ -197,6 +250,11 @@ header {
     margin: 2px 10px 0px 430px;
     border-radius: 10px 10px 0px 10px;
 
+}
+#user{
+    font-family: cursive;
+    font-size: 18px;
+    color: white;
 }
 
 #mess{
