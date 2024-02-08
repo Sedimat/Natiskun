@@ -161,6 +161,7 @@ function knopka(name, link) {
         for(let i = 0; i < data.list_cont.length; i++){
             add_cont(data.list_cont[i], name)
         }
+
         for(let i = 0; i < data.messegs.length; i++){
 
             if (data.messegs[i][0][0] === data.username) {
@@ -169,7 +170,7 @@ function knopka(name, link) {
             else {
             dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2],"","up",data.messegs[i][1],data.messegs[i][2])
             }
-        }
+            }
 
         })
 
@@ -200,16 +201,16 @@ function link_name(){
 async function asyncFunction() {
     // змінюємо розмір контенту
     edit_height()
-
     fetch(`/new_mess_js`)  // Вказуємо URL для вашого Django view
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.list_meseg_new.length; i++) {
                     if (data.list_meseg_new[i][1] > 0 ) {
-                          var currentPath = window.location.pathname;
-                          var a = currentPath.lastIndexOf("/");
-                          var name = currentPath.slice(a + 1);
-                          var link = currentPath.slice(1, a);
+
+                          var result = link_name();
+                          var name = result[0];
+                          var link = result[1];
+                          var link0 = result[2];
 
                           if (link === "contact" && name === data.list_meseg_new[i][0]) {
 

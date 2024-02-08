@@ -210,8 +210,12 @@ header {
     height: 70px;
 
 }
+.table_group{
+    background-color: #26292eDD;
+}
+
 .group0{
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #062b66;
     margin: 5px;
     width: 390px;
@@ -228,6 +232,7 @@ header {
     height: 70px;
 
 }
+
 
 .div_form {
     margin: 10px 25px 10px 25px;

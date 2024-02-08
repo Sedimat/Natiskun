@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
-from .models import UserProfile, UserList, Messeg
+from .models import UserProfile, UserList, Messeg, Group, GroupMesseg
 from django.db.models import Q
 import random
 import string
@@ -49,7 +49,6 @@ def list_contact(user, x=None):
             messegs = Messeg.objects.filter(key=key, user_2="", user_1=user_n.username).order_by("-timestamp")  # сортує по даті додавання
             list_meseg_new.append([user_n.username,len(messegs)])
 
-
         else:
             messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
             for m in messegs:
@@ -67,8 +66,7 @@ def list_contact(user, x=None):
     else:
         return {"list_cont": list_cont}
 
-def list_messeg(user, name, x=0, len=10, add=0):
-    print(add)
+def list_messeg(user, name, x=0, len_m=15, add=0):
     user_p = UserProfile.objects.get(id_user=user)
     user1 = User.objects.get(username=name)
     user_p1 = UserProfile.objects.get(id_user=user1)
@@ -78,7 +76,7 @@ def list_messeg(user, name, x=0, len=10, add=0):
     else:
         key = f"{user_p1.key}{user_p.key}"
     if add == 0:
-        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:len]  # сортує по даті додавання та видає обмежену кількість
+        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:len_m]  # сортує по даті додавання та видає обмежену кількість
     else:
         messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[add:add+10]
     if x == 0:
@@ -99,6 +97,7 @@ def list_messeg(user, name, x=0, len=10, add=0):
 
         # Змінюємо статус на прочитані
         Messeg.objects.filter(id__in=id_list).update(user_2=1)
+        print(len(list_messeg))
 
         return {"messegs": list_messeg}
 
@@ -137,6 +136,8 @@ def index(request):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
+        list_group = Group.objects.filter(id_user=user)
+        context.update({"list_group": list_group})
 
     if request.method == "POST":
         search = request.POST.get('search')
@@ -217,39 +218,17 @@ def add(request, id=None):
     return redirect('index')
 
 
-def contact(request, name=None):
+def contact(request, name=None, id=None):
     context = {}
     if request.user.username:
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
         context.update({"name": name})
+        list_group = Group.objects.filter(id_user=user)
+        context.update({"list_group": list_group})
     else:
         return redirect('index')
-
-    # if request.method == "POST":
-    #     messeg = request.POST.get('messeg')
-    #     if messeg:
-    #         # Закодовуєм список з посиланнями на зображення та просто посилання
-    #         list_mess = extract_image_links(messeg)
-    #         json_list_mess = json.dumps(list_mess[1])
-    #         json_list_link = json.dumps(list_mess[2])
-    #
-    #         user = User.objects.get(username=request.user.username)
-    #         user_p = UserProfile.objects.get(id_user=user)
-    #         user1 = User.objects.get(username=name)
-    #         user_p1 = UserProfile.objects.get(id_user=user1)
-    #
-    #         key = ""
-    #         if user.id < user1.id:
-    #             key = f"{user_p.key}{user_p1.key}"
-    #         else:
-    #             key = f"{user_p1.key}{user_p.key}"
-    #
-    #         mess = Messeg(key=key, user_1=user.username, messeg_1=list_mess[0],
-    #                       messeg_2=json_list_mess, messeg_3=json_list_link)
-    #         mess.save()
-
 
     return render(request, 'Natiskun/contact.html', context=context)
 
@@ -275,7 +254,6 @@ def get_data0(request, name=None, id=None):
         user = User.objects.get(username=request.user.username)
         context.update(list_messeg(user, name, 1, id))
     return JsonResponse(context)
-
 
 
 def index_js(request):
@@ -333,5 +311,40 @@ def user(request):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
+        list_group = Group.objects.filter(id_user=user)
+        context.update({"list_group": list_group})
+
 
     return render(request, 'Natiskun/user.html', context=context)
+
+
+def add_group(request):
+    if request.method == "POST":
+        if request.user.username:
+            user = User.objects.get(username=request.user.username)
+            name = request.POST.get('name')
+            description = request.POST.get('description')
+            if name and description:
+                group = Group(id_user=user, name=name, description=description)
+                group.save()
+
+    return redirect('user')
+
+
+def group(request, id=None):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update({"user": user})
+        list_group = Group.objects.filter(id_user=user)
+        context.update(U_Prof(request))
+        context.update({"list_group": list_group})
+        group = Group.objects.get(id=id)
+
+        len_messegs = GroupMesseg.objects.filter(id_group=group).count()
+        print(len_messegs)
+        group_messegs = GroupMesseg.objects.filter(id_group=group)
+        context.update({"group_messegs": group_messegs})
+
+
+    return render(request, 'Natiskun/contact.html', context=context)

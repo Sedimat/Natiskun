@@ -33,7 +33,7 @@
 
     {% if user.is_authenticated %}
         {% for cont in list_cont %}
-            <a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
+            <a href="{% url 'contact' cont.1 0 %}" style="text-decoration: none;">
                     <div class="group">
                         <table>
                             <tr id="test">

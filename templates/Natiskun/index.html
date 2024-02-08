@@ -33,6 +33,38 @@
 
     {% if user.is_authenticated %}
 
+        {% for group in list_group %}
+        <a href="{% url 'group' group.id %}" id="user" style="text-decoration: none;">
+            <div class="group0" style="background: url('/media/fon.jpg')">
+                <table>
+                    <tr id="test" >
+                        <td width="90"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:90px;"></td>
+                        <td>
+                            <table  width="210">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">{{ group.name }}</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="60"><p id="mess1">{{ group.description }}</p></td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td>
+                            <table width="30">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">Постів</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="60"><p id="mess">5555</p></td>
+                                </tr>
+                            </table></td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        {% endfor %}
+
     {% else %}
 
         <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">

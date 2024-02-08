@@ -71,7 +71,7 @@
 <div class="search_result">
 <!--    <p id="mess">1</p>-->
     <div class="form_group_add">
-        <form method="POST" role="form" action="{% url 'login' %}">
+        <form method="POST" role="form" action="{% url 'add_group' %}">
                 {% csrf_token %}
             <input type="text" class="group_form" name="name" placeholder="Назва вашої групи">
             <textarea class="text_area_group" name="description" placeholder="Опис вашої групи"></textarea>
@@ -80,26 +80,37 @@
     </div>
 
     <div class="group_list">
-        <div class="group0" ">
-        <table>
-            <tr id="test">
-                <td width="60"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:60px;"></td>
-                <td>
-                    <table  width="250">
-                        <tr id="test">
-                            <td height="15"><p id="mess">Назва групи</p></td>
-                        </tr>
-                        <tr id="test">
-                            <td height="20"><p id="mess1">Остане повідомлення</p></td>
-                        </tr>
-                    </table>
-                </td>
-                <td height="15"><p id="mess" >5</p></td>
-            </tr>
-        </table>
-    </div>
-        <div class="group0" style="background: url('/media/fon.jpg')">
-        </div>
+
+        {% for group in list_group %}
+            <div class="group0" style="background: url('/media/fon.jpg')">
+                <table>
+                    <tr id="test" >
+                        <td width="90"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:90px;"></td>
+                        <td>
+                            <table  width="210">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">{{ group.name }}</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="60"><p id="mess1">{{ group.description }}</p></td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td>
+                            <table width="30">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">Постів</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="60"><p id="mess">5555</p></td>
+                                </tr>
+                            </table></td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+
 
     </div>
 

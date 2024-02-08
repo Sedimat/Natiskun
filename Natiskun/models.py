@@ -51,7 +51,7 @@ class Group(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Група та її власник: {self.id_user}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = "Група"
@@ -65,10 +65,10 @@ class GroupMesseg(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Повідомлення'
+        return f'Повідомлення групи'
 
     class Meta:
-        verbose_name = "Повідомлення"
-        verbose_name_plural = "Повідомлення"
+        verbose_name = "Повідомлення групи"
+        verbose_name_plural = "Повідомлення групи"
 
 
