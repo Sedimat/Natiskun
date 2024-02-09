@@ -17,4 +17,7 @@ urlpatterns = [
     path("index_js", views.index_js, name='index_js'),
     path("new_mess_js", views.new_mess_js, name='new_mess_js'),
     path("post_mess", views.post_mess, name='post_mess'),
+    path("group_messeg", views.group_messeg, name='group_messeg'),
+    path("group_js/<int:id>", views.group_js, name="group_js"),
+
 ]

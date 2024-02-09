@@ -2,7 +2,6 @@
 // лічильник повідомлень
 var count = 0;
 
-
 function dodavannya(user, text, time, side, place, img, link) {
     count++
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
@@ -72,6 +71,59 @@ function dodavannya(user, text, time, side, place, img, link) {
 
 }
 
+// Виводить пост в групу
+
+function add_messeg_group(poss,list_post) {
+  // Отримання елементу <div class="div_messeg">
+  var link0 = "/user"
+  var messeg = list_post[0]
+  var time = list_post[3]
+  var img = list_post[1]
+
+  var div_messeg = document.querySelector('.div_messeg');
+
+    // Створення елемента <div> з класом "group_messeg"
+    var group_messeg = document.createElement('div');
+    group_messeg.classList.add('group_messeg');
+
+    // Створення елементів <img> для кожного зображення в масиві img
+    img.forEach(function(imageUrl) {
+        var imgElement = document.createElement('img');
+        imgElement.classList.add('img_group');
+        imgElement.src = imageUrl;
+        group_messeg.appendChild(imgElement); // Додавання <img> до елемента <div>
+    });
+
+    // Створення елементів <p> для тексту повідомлення та часу
+    var messElement = document.createElement('p');
+    messElement.id = 'mess';
+    messElement.textContent = messeg;
+    group_messeg.appendChild(messElement);
+
+    var timeElement = document.createElement('p');
+    timeElement.id = 'time_g';
+    timeElement.textContent = time;
+
+    // Додавання тексту повідомлення та часу до елемента <div>
+    group_messeg.appendChild(timeElement);
+
+    // Створення елемента <a> з посиланням
+    var linkElement = document.createElement('a');
+    linkElement.href = '/user';
+    linkElement.textContent = 'Коментарі:';
+    linkElement.classList.add('link_group');
+
+    // Додавання елемента <a> до елемента <div class="group_messeg">
+    group_messeg.appendChild(linkElement);
+
+  // Додавання елемента <a> в <div class="navigation">
+  if(poss === 1){
+  div_messeg.insertBefore(group_messeg, div_messeg.firstChild);
+  }else{
+  div_messeg.appendChild(group_messeg);
+  }
+};
+
 
 function add_cont(list_c, user) {
   // Отримання елементу <div class="navigation">
@@ -139,7 +191,6 @@ function add_cont(list_c, user) {
   `;
 
 }
-
   // Додавання елемента <a> в <div class="navigation">
   navigationDiv.appendChild(link);
 };
@@ -276,11 +327,11 @@ function edit_height() {
 document.addEventListener("DOMContentLoaded", handler)
 
 function handler(event) {
-
     var result = link_name();
     var name = result[0];
     var link = result[1];
     var link0 = result[2];
+    console.log(link, name)
 
     if (link0 === "/") {
         runEverySecond()
@@ -304,8 +355,34 @@ function handler(event) {
 
     }
 
-}
+    if (link === "group" && name > 0) {
 
+        fetch(`/group_js/${name}`)  // Вказуємо URL для вашого Django view
+        .then(response => response.json())
+        .then(data => {
+            if (data.list_messegs.length > 0) {
+                for (let i = 0; i < data.list_messegs.length; i++) {
+                    console.log(data.list_messegs[i]);
+                    add_messeg_group(1, data.list_messegs[i])
+                }
+            }
+        });
+
+
+        fetch(`/index_js`)  // Вказуємо URL для вашого Django view
+        .then(response => response.json())
+        .then(data => {
+            if (data.list_cont.length > 0) {
+                for (let i = 0; i < data.list_cont.length; i++) {
+                    add_cont(data.list_cont[i], name);
+                }
+            }
+        });
+
+    }
+
+
+}
 
 //// функції скролу
 //var divMesseg = document.querySelector('.div_messeg');
@@ -321,7 +398,6 @@ function handler(event) {
 //    e.preventDefault();
 //});
 
-
 var divMesseg1 = document.querySelector('.navigation');
 
 divMesseg1.addEventListener('wheel', function (e) {
@@ -334,6 +410,54 @@ divMesseg1.addEventListener('wheel', function (e) {
     // Зупиняємо подальшу обробку події колеса миші
     e.preventDefault();
 });
+
+
+// додаемо повідомленя в групі
+var group_form = document.getElementById('group_form');
+if (group_form){
+    group_form.addEventListener('keydown', function(a) {
+    if (a.key === 'Enter' && !a.shiftKey) {
+        a.preventDefault();  // Заборона вставляння нового рядка
+        var textarea = document.getElementById('group_form');
+        console.log(textarea.value)
+        var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+        var result = link_name();
+        var id = result[0];
+        var link = result[1];
+        var link0 = result[2];
+        console.log(name)
+
+        var data = {
+            messeg: textarea.value,
+            id: id,
+        };
+
+        var formData = new URLSearchParams();
+
+        for (const [key, value] of Object.entries(data)) {
+            formData.append(key, value);
+        }
+
+        fetch('/group_messeg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+            },
+
+            body: formData.toString(),
+        })
+        .then(response => response.json())
+        .then(data => {
+                console.log(data.username)
+                console.log(data.post)
+                add_messeg_group(1,data.post)
+        });
+        textarea.value = '';  // Після відправлення очистіть поле
+    }
+    });
+}
 
 
 // Додаваня нового повідомленя та повертаєм повідомлення

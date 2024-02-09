@@ -25,9 +25,7 @@ def extract_image_links(text):
     links = re.findall(link_pattern, text_without_images)
     text_without_links = re.sub(link_pattern, '', text_without_images)
 
-
     return [text_without_links, image_links, links]
-
 
 
 def list_contact(user, x=None):
@@ -46,8 +44,9 @@ def list_contact(user, x=None):
             key = f"{user_p.key}{user_p1.key}"
 
         if x == 1:
-            messegs = Messeg.objects.filter(key=key, user_2="", user_1=user_n.username).order_by("-timestamp")  # сортує по даті додавання
-            list_meseg_new.append([user_n.username,len(messegs)])
+            messegs = Messeg.objects.filter(key=key, user_2="", user_1=user_n.username).order_by(
+                "-timestamp")  # сортує по даті додавання
+            list_meseg_new.append([user_n.username, len(messegs)])
 
         else:
             messegs = Messeg.objects.filter(key=key).order_by("-timestamp")  # сортує по даті додавання
@@ -56,15 +55,17 @@ def list_contact(user, x=None):
                     len_m += 1
 
             if messegs:
-                list_cont.append([str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}"])
+                list_cont.append(
+                    [str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}"])
             else:
-                list_cont.append([str(user_p.avatar), user_n.username, "", len_m , f"/contact/{user_n.username}"])
+                list_cont.append([str(user_p.avatar), user_n.username, "", len_m, f"/contact/{user_n.username}"])
 
     if x == 1:
         return {"list_meseg_new": list_meseg_new}
 
     else:
         return {"list_cont": list_cont}
+
 
 def list_messeg(user, name, x=0, len_m=15, add=0):
     user_p = UserProfile.objects.get(id_user=user)
@@ -76,9 +77,10 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
     else:
         key = f"{user_p1.key}{user_p.key}"
     if add == 0:
-        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[:len_m]  # сортує по даті додавання та видає обмежену кількість
+        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[
+                  :len_m]  # сортує по даті додавання та видає обмежену кількість
     else:
-        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[add:add+10]
+        messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[add:add + 10]
     if x == 0:
         return {"messegs": messegs}
     else:
@@ -88,7 +90,7 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
             img_list = json.loads(m.messeg_2)
             link_list = json.loads(m.messeg_3)
             if m.user_2 == "1":
-                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M")+" ✅"], img_list, link_list])
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✅"], img_list, link_list])
             else:
                 list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉"], img_list, link_list])
 
@@ -117,6 +119,7 @@ def generate_random_string():
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for _ in range(8))
 
+
 def U_Prof(request):
     try:
         user = User.objects.get(username=request.user.username)
@@ -129,7 +132,6 @@ def U_Prof(request):
 def index(request):
     # query = request.POST.get('query')
     # post = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)).order_by("-published_date")  # сортує по даті додавання
-
 
     context = {}
     if request.user.username:
@@ -156,6 +158,7 @@ def index(request):
             errors = user_form.errors
 
     return render(request, 'Natiskun/index.html', context=context)
+
 
 def logout_view(request):
     logout(request)
@@ -232,6 +235,7 @@ def contact(request, name=None, id=None):
 
     return render(request, 'Natiskun/contact.html', context=context)
 
+
 # Виводе перші N повідомлень
 def get_data(request, name=None, id=None):
     context = {}
@@ -239,13 +243,14 @@ def get_data(request, name=None, id=None):
         user = User.objects.get(username=request.user.username)
         if id == 0:
             context.update({"username": user.username})
-            context.update(list_messeg(user, name,1))
+            context.update(list_messeg(user, name, 1))
             context.update(list_contact(user))
         else:
             context.update({"username": user.username})
-            context.update(list_messeg(user, name, 1,add=id))
+            context.update(list_messeg(user, name, 1, add=id))
 
     return JsonResponse(context)
+
 
 # додає N повідомлень
 def get_data0(request, name=None, id=None):
@@ -262,6 +267,7 @@ def index_js(request):
         user = User.objects.get(username=request.user.username)
         context.update(list_contact(user))
     return JsonResponse(context)
+
 
 def new_mess_js(request):
     context = {}
@@ -314,7 +320,6 @@ def user(request):
         list_group = Group.objects.filter(id_user=user)
         context.update({"list_group": list_group})
 
-
     return render(request, 'Natiskun/user.html', context=context)
 
 
@@ -344,7 +349,67 @@ def group(request, id=None):
         len_messegs = GroupMesseg.objects.filter(id_group=group).count()
         print(len_messegs)
         group_messegs = GroupMesseg.objects.filter(id_group=group)
-        context.update({"group_messegs": group_messegs})
+        list_messegs = []
+        for gm in group_messegs:
+            img_list = json.loads(gm.messeg_2)
+            link_list = json.loads(gm.messeg_3)
+            list_messegs.append([gm.messeg_1, img_list, link_list, gm.timestamp, gm.id])
+
+        context.update({"list_messegs": list_messegs})
+
+    return render(request, 'Natiskun/group.html', context=context)
 
 
-    return render(request, 'Natiskun/contact.html', context=context)
+def group_messeg(request):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update({"username": user.username})
+
+    if request.method == "POST":
+        messeg = request.POST.get('messeg')
+        id = request.POST.get('id')
+        if messeg:
+            # Закодовуєм список з посиланнями на зображення та просто посилання
+            list_mess = extract_image_links(messeg)
+            json_list_mess = json.dumps(list_mess[1])
+            json_list_link = json.dumps(list_mess[2])
+
+            group = Group.objects.get(id=id)
+
+            mess = GroupMesseg(id_group=group, messeg_1=list_mess[0],
+                    messeg_2=json_list_mess, messeg_3=json_list_link)
+            mess.save()
+
+            img_list = json.loads(mess.messeg_2)
+            link_list = json.loads(mess.messeg_3)
+
+            context.update({"post": [mess.messeg_1,img_list, link_list, str(mess.timestamp)[:16], mess.id]})
+
+
+            # group_messegs = GroupMesseg.objects.filter(id_group=group)
+            # list_messegs = []
+            # for gm in group_messegs:
+            #     img_list = json.loads(gm.messeg_2)
+            #     link_list = json.loads(gm.messeg_3)
+            #     list_messegs.append([gm.messeg_1, img_list, link_list, gm.timestamp, gm.id])
+            #
+            # context.update({"list_messegs": list_messegs})
+
+
+    return JsonResponse(context)
+
+
+def group_js(request, id=None):
+    context = {}
+    group = Group.objects.get(id=id)
+    group_messegs = GroupMesseg.objects.filter(id_group=group)
+    list_messegs = []
+    for gm in group_messegs:
+        img_list = json.loads(gm.messeg_2)
+        link_list = json.loads(gm.messeg_3)
+        list_messegs.append([gm.messeg_1, img_list, link_list, str(gm.timestamp)[11:16], gm.id])
+
+    context.update({"list_messegs": list_messegs})
+
+    return JsonResponse(context)

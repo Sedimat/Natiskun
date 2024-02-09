@@ -1,0 +1,95 @@
+{% extends "Natiskun/base.html" %}
+
+{% block login %}
+
+{% if user.is_authenticated %}
+<table>
+    <tr>
+        <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
+        <td><a href="{% url 'user' %}" id="user" style="text-decoration: none;">{{ user.username }}</a></td>
+
+    </tr>
+</table>
+
+{% else %}
+<table>
+    <tr>
+        <td width="300">
+            <form method="POST" role="form" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
+                <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
+                <button type="submit" class="butt_green">Війти</button>
+            </form>
+        </td>
+        <td><a class="butt_red" href="#">Реєстрація</a></td>
+    </tr>
+</table>
+{% endif %}
+
+{% endblock %}
+
+{% block navigation %}
+
+    {% for group in list_group %}
+        <a href="{% url 'group' group.id %}" id="user" style="text-decoration: none;">
+            <div class="group0" style="background: url('/media/fon.jpg')">
+                <table>
+                    <tr id="test" >
+                        <td>
+                            <table  width="210">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">{{ group.name }}</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess1">{{ group.description }}</p></td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td>
+                            <table width="30">
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">Постів</p></td>
+                                </tr>
+                                <tr id="test"  class="table_group">
+                                    <td height="15"><p id="mess">5555</p></td>
+                                </tr>
+                            </table></td>
+                    </tr>
+                </table>
+            </div>
+        </a>
+    {% endfor %}
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block messeg %}
+
+
+{% endblock %}
+
+
+{% block messeg_form %}
+
+    {% if user.is_authenticated %}
+
+        <table>
+            <tr>
+                <form method="POST" role="form" action="#">
+                    {% csrf_token %}
+                    <td>
+                        <textarea id="group_form" class="text_group" name="messeg" placeholder="Повідомленя"></textarea>
+                    </td>
+                </form>
+            </tr>
+
+        </table>
+    {% endif %}
+
+
+{% endblock %}
