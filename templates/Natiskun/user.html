@@ -81,35 +81,20 @@
 
     <div class="group_list">
 
-        {% for group in list_group %}
-            <div class="group0" style="background: url('/media/fon.jpg')">
-                <table>
-                    <tr id="test" >
-                        <td width="90"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:90px;"></td>
-                        <td>
-                            <table  width="210">
-                                <tr id="test"  class="table_group">
-                                    <td height="15"><p id="mess">{{ group.name }}</p></td>
-                                </tr>
-                                <tr id="test"  class="table_group">
-                                    <td height="60"><p id="mess1">{{ group.description }}</p></td>
-                                </tr>
-                            </table>
-                        </td>
+            {% for group in list_groups %}
+                <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
+                    <div class="group0" style="background: url('/media/fon1.jpg')">
+                        <p class="mess_g">{{ group.0 }}</p>
+                        <p class="mess_g_r">Постів {{ group.3 }}</p>
 
-                        <td>
-                            <table width="30">
-                                <tr id="test"  class="table_group">
-                                    <td height="15"><p id="mess">Постів</p></td>
-                                </tr>
-                                <tr id="test"  class="table_group">
-                                    <td height="60"><p id="mess">5555</p></td>
-                                </tr>
-                            </table></td>
-                    </tr>
-                </table>
-            </div>
-        {% endfor %}
+                        <table  style="width:350px;">
+                            <tr id="test" >
+                                <td><p id="mess">{{ group.1 }}</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                </a>
+            {% endfor %}
 
 
     </div>

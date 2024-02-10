@@ -3,18 +3,7 @@ from django.db import models
 
 # Create your models here.
 
-class UserProfile(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")
-    avatar = models.ImageField(upload_to='avatar', default='avatar/avatar_crj2ayQ.jpg')
-    phone = models.CharField(max_length=13, verbose_name="Телефон")
-    key = models.TextField(max_length=8,verbose_name="Ключ")
 
-    def __str__(self):
-        return f'Додаткова інформація: {self.id_user}'
-
-    class Meta:
-        verbose_name = "Користувач додаток"
-        verbose_name_plural = "Користувачі додаток"
 
 class UserList(models.Model):
     id_user = models.ForeignKey(User,related_name='userlists_as_id_user', on_delete=models.CASCADE, verbose_name="Користувач")
@@ -70,5 +59,19 @@ class GroupMesseg(models.Model):
     class Meta:
         verbose_name = "Повідомлення групи"
         verbose_name_plural = "Повідомлення групи"
+
+class UserProfile(models.Model):
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")
+    avatar = models.ImageField(upload_to='avatar', default='avatar/avatar_crj2ayQ.jpg')
+    phone = models.CharField(max_length=13, verbose_name="Телефон")
+    key = models.TextField(max_length=8,verbose_name="Ключ")
+    groups = models.ManyToManyField(Group, verbose_name="Групи користувача")
+
+    def __str__(self):
+        return f'Додаткова інформація: {self.id_user}'
+
+    class Meta:
+        verbose_name = "Користувач додаток"
+        verbose_name_plural = "Користувачі додаток"
 
 

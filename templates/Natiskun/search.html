@@ -54,9 +54,12 @@
                 </a>
         {% endfor %}
 
+
     {% else %}
 
     {% endif %}
+
+
 
 
 
@@ -65,25 +68,54 @@
 {% block messeg %}
     <div class="search_result">
         {% if user.is_authenticated %}
-            <h1 id="mess">Результат пошуку:</h1>
+            <div class="search_group">
+            <h1 id="mess">Результат пошуку користувачів:</h1>
 
             {% for l in list_user %}
 
             {% if l.0 != user.username %}
 
-            <div class="group1">
-                <table>
-                    <tr>
-                        <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
-                        <td width="100"><p id="mess">{{ l.0 }}</p></td>
-                        <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
+                <div class="group1">
+                    <table>
+                        <tr>
+                            <td width="60"><img class="avatar" src="{{ l.1.url }}" style="width:60px;"></td>
+                            <td width="100"><p id="mess">{{ l.0 }}</p></td>
+                            <td width="100"><a href="{% url 'add' l.2 %}" class="butt_green">Додати</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+            {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="search_group">
+
+            <h1 id="mess">Результат пошуку групи:</h1>
+
+        {% for group in list_groups %}
+        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
+            <div class="group2" style="background: url('/media/fon1.jpg')">
+                <p class="mess_g">{{ group.0 }}</p>
+
+                <a href="{% url 'add_g' group.2 %}" class="butt_green">Додати</a>
+
+                <p class="mess_g_r">Постів {{ group.3 }}</p>
+
+
+                <table  style="width:350px;">
+                    <tr id="test" >
+                        <td><p id="mess">{{ group.1 }}</p></td>
                     </tr>
                 </table>
             </div>
-    {% endif %}
+        </a>
+        {% endfor %}
 
-    {% endfor %}
-
+        </div>
 
     {% else %}
 

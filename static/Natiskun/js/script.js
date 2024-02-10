@@ -79,6 +79,8 @@ function add_messeg_group(poss,list_post) {
   var messeg = list_post[0]
   var time = list_post[3]
   var img = list_post[1]
+  var l_link = list_post[2]
+
 
   var div_messeg = document.querySelector('.div_messeg');
 
@@ -87,12 +89,32 @@ function add_messeg_group(poss,list_post) {
     group_messeg.classList.add('group_messeg');
 
     // Створення елементів <img> для кожного зображення в масиві img
+    if(img.length > 1){
     img.forEach(function(imageUrl) {
         var imgElement = document.createElement('img');
         imgElement.classList.add('img_group');
         imgElement.src = imageUrl;
         group_messeg.appendChild(imgElement); // Додавання <img> до елемента <div>
     });
+    }else{
+        var imgElement = document.createElement('img');
+            imgElement.classList.add('img_group1');
+            imgElement.src = img[0];
+            imgElement.alt = 'Image';
+
+            // Додаємо imgElement до нового div
+            group_messeg.appendChild(imgElement);
+    }
+
+    l_link.forEach(function(link_url) {
+        var linkElement = document.createElement('a');
+        linkElement.href = link_url;
+        linkElement.id = 'link'; // Додаємо клас, якщо потрібно
+        linkElement.textContent = link_url;
+        linkElement.style.display = "block";
+        group_messeg.appendChild(linkElement);
+    });
+
 
     // Створення елементів <p> для тексту повідомлення та часу
     var messElement = document.createElement('p');
@@ -565,13 +587,24 @@ divMesseg.addEventListener('scroll', function() {
 
             add_messeg()
 
-//        divMesseg.style.overflowY = 'hidden';
-//        divMesseg.style.overflowY = 'auto';
-
         divMesseg.scrollTop = test;
         }
     }, 50);
 });
+
+var newDiv = document.createElement('div');
+
+// Задання стилів для нового елемента
+newDiv.style.width = '50px';
+newDiv.style.height = '50px';
+newDiv.style.backgroundColor = 'red';
+newDiv.style.borderRadius = '10px';
+newDiv.style.position = 'absolute';
+newDiv.style.left = '300px';
+newDiv.style.top = '500px';
+
+// Додавання нового елемента в DOM
+document.body.appendChild(newDiv);
 
 
 //                divMesseg.style.overflow = 'hidden';

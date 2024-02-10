@@ -12,6 +12,23 @@ import re
 import json
 
 
+def user_groups(user=None, name=None):
+    # повертає список груп користувачів
+    groups_of_user = None
+    if name:
+        groups_of_user = Group.objects.filter(name=name)
+    else:
+        if user:
+            user_p = UserProfile.objects.get(id_user=user)
+            groups_of_user = user_p.groups.all()
+
+    list_groups = []
+    for g in groups_of_user:
+        len_messegs = GroupMesseg.objects.filter(id_group=g).count()
+        list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user)])
+    return {"list_groups": list_groups}
+
+
 def extract_image_links(text):
     # Регулярний вираз для виявлення посилань на зображення
     image_pattern = re.compile(r'https?://\S+?\.(?:png|jpg|jpeg|gif|bmp)', re.IGNORECASE)
@@ -141,6 +158,8 @@ def index(request):
         list_group = Group.objects.filter(id_user=user)
         context.update({"list_group": list_group})
 
+        context.update(user_groups(user)) # виводе групи користувача
+
     if request.method == "POST":
         search = request.POST.get('search')
         if search:
@@ -172,8 +191,6 @@ def search(request, id=None):
         context.update({"user": user})
         context.update(U_Prof(request))
         context.update(contact_list(user))  # отримуемо список контактів
-
-
     else:
         return redirect('index')
 
@@ -183,8 +200,16 @@ def search(request, id=None):
         for i in list_user:
             user_p = UserProfile.objects.get(id_user=i.id)
             double_list_user.append([i.username, user_p.avatar, i.id])
-
         context.update({"list_user": double_list_user})
+
+        groups_of_user = Group.objects.all()
+        list_groups = []
+        for g in groups_of_user:
+            len_messegs = GroupMesseg.objects.filter(id_group=g).count()
+            list_groups.append([g.name, g.description, g.id, len_messegs])
+
+        context.update({"list_groups": list_groups})
+
 
     if request.method == "POST":
         search = request.POST.get('search')
@@ -195,6 +220,7 @@ def search(request, id=None):
                 user_p = UserProfile.objects.get(id_user=i.id)
                 double_list_user.append([i.username, user_p.avatar, i.id])
 
+            context.update(user_groups(name=search))  # виводе групи користувача
             context.update({"list_user": double_list_user})
 
     return render(request, 'Natiskun/search.html', context=context)
@@ -220,6 +246,15 @@ def add(request, id=None):
         u_list1.save()
     return redirect('index')
 
+def add_g(request, id=None):
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        group = Group.objects.get(id=id)
+        user_prof = UserProfile.objects.get(id_user=user)
+        user_prof.groups.add(group)
+
+    return redirect('index')
+
 
 def contact(request, name=None, id=None):
     context = {}
@@ -230,6 +265,9 @@ def contact(request, name=None, id=None):
         context.update({"name": name})
         list_group = Group.objects.filter(id_user=user)
         context.update({"list_group": list_group})
+
+        context.update(user_groups(user)) # виводе групи користувача
+
     else:
         return redirect('index')
 
@@ -317,8 +355,9 @@ def user(request):
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
         context.update(U_Prof(request))
-        list_group = Group.objects.filter(id_user=user)
-        context.update({"list_group": list_group})
+
+        context.update(user_groups(user)) # виводе групи користувача
+
 
     return render(request, 'Natiskun/user.html', context=context)
 
@@ -332,6 +371,8 @@ def add_group(request):
             if name and description:
                 group = Group(id_user=user, name=name, description=description)
                 group.save()
+                user_prof = UserProfile.objects.get(id_user=user)
+                user_prof.groups.add(group)
 
     return redirect('user')
 
@@ -341,21 +382,13 @@ def group(request, id=None):
     if request.user.username:
         user = User.objects.get(username=request.user.username)
         context.update({"user": user})
-        list_group = Group.objects.filter(id_user=user)
         context.update(U_Prof(request))
-        context.update({"list_group": list_group})
+
         group = Group.objects.get(id=id)
+        print(str(group.id_user))
+        context.update({"username": str(group.id_user)})
 
-        len_messegs = GroupMesseg.objects.filter(id_group=group).count()
-        print(len_messegs)
-        group_messegs = GroupMesseg.objects.filter(id_group=group)
-        list_messegs = []
-        for gm in group_messegs:
-            img_list = json.loads(gm.messeg_2)
-            link_list = json.loads(gm.messeg_3)
-            list_messegs.append([gm.messeg_1, img_list, link_list, gm.timestamp, gm.id])
-
-        context.update({"list_messegs": list_messegs})
+        context.update(user_groups(user)) # виводе групи користувача
 
     return render(request, 'Natiskun/group.html', context=context)
 
@@ -383,19 +416,7 @@ def group_messeg(request):
 
             img_list = json.loads(mess.messeg_2)
             link_list = json.loads(mess.messeg_3)
-
-            context.update({"post": [mess.messeg_1,img_list, link_list, str(mess.timestamp)[:16], mess.id]})
-
-
-            # group_messegs = GroupMesseg.objects.filter(id_group=group)
-            # list_messegs = []
-            # for gm in group_messegs:
-            #     img_list = json.loads(gm.messeg_2)
-            #     link_list = json.loads(gm.messeg_3)
-            #     list_messegs.append([gm.messeg_1, img_list, link_list, gm.timestamp, gm.id])
-            #
-            # context.update({"list_messegs": list_messegs})
-
+            context.update({"post": [mess.messeg_1,img_list, link_list, str(mess.timestamp)[11:16], mess.id]})
 
     return JsonResponse(context)
 
