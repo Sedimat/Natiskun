@@ -33,7 +33,7 @@
 
     {% for group in list_groups %}
         <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
-            <div class="group0" style="background: url('/media/fon1.jpg')">
+            <div class="group0" style="background: url({{ group.5.url }})">
                 <p class="mess_g">{{ group.0 }}</p>
                 <p class="mess_g_r">Постів {{ group.3 }}</p>
 

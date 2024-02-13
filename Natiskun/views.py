@@ -25,7 +25,7 @@ def user_groups(user=None, name=None):
     list_groups = []
     for g in groups_of_user:
         len_messegs = GroupMesseg.objects.filter(id_group=g).count()
-        list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user)])
+        list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user),g.fon])
     return {"list_groups": list_groups}
 
 
@@ -73,9 +73,9 @@ def list_contact(user, x=None):
 
             if messegs:
                 list_cont.append(
-                    [str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}"])
+                    [str(user_p.avatar), user_n.username, messegs[0].messeg_1, len_m, f"/contact/{user_n.username}", user_n.id])
             else:
-                list_cont.append([str(user_p.avatar), user_n.username, "", len_m, f"/contact/{user_n.username}"])
+                list_cont.append([str(user_p.avatar), user_n.username, "", len_m, f"/contact/{user_n.username}", user_n.id])
 
     if x == 1:
         return {"list_meseg_new": list_meseg_new}
@@ -116,7 +116,6 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
 
         # Змінюємо статус на прочитані
         Messeg.objects.filter(id__in=id_list).update(user_2=1)
-        print(len(list_messeg))
 
         return {"messegs": list_messeg}
 
@@ -206,7 +205,7 @@ def search(request, id=None):
         list_groups = []
         for g in groups_of_user:
             len_messegs = GroupMesseg.objects.filter(id_group=g).count()
-            list_groups.append([g.name, g.description, g.id, len_messegs])
+            list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user),g.fon])
 
         context.update({"list_groups": list_groups})
 
@@ -385,7 +384,6 @@ def group(request, id=None):
         context.update(U_Prof(request))
 
         group = Group.objects.get(id=id)
-        print(str(group.id_user))
         context.update({"username": str(group.id_user)})
 
         context.update(user_groups(user)) # виводе групи користувача
@@ -434,3 +432,35 @@ def group_js(request, id=None):
     context.update({"list_messegs": list_messegs})
 
     return JsonResponse(context)
+
+
+def change_avatar(request, id=None, id1=None):
+    if id1 == 1:
+        if request.method == "POST":
+            if 'avatar' in request.FILES:
+                avatar_file = request.FILES['avatar']
+                user_prof = UserProfile.objects.get(id_user=id)
+
+                # Видалення попереднього файлу аватари
+                if user_prof.avatar:
+                    user_prof.avatar.delete()
+
+                # Заміна файлу аватари новим файлом
+                user_prof.avatar = avatar_file
+                user_prof.save()
+
+    if id1 == 2:
+        if request.method == "POST":
+            phone = request.POST.get('phone')
+            if phone:
+                user_prof = UserProfile.objects.get(id_user=id)
+                user_prof.phone = phone
+                user_prof.save()
+
+    return redirect('user')
+
+
+def dell_group(request, id=None):
+    group = Group.objects.get(id=id)
+    group.delete()
+    return redirect('user')

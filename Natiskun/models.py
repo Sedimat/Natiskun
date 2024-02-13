@@ -37,7 +37,9 @@ class Group(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")
     name = models.CharField(max_length=40, verbose_name="Назва")
     description = models.TextField(blank=True, verbose_name="Опис")
+    fon = models.ImageField(upload_to='group', default='group/fon1.jpg')
     timestamp = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f'{self.name}'

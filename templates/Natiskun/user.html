@@ -8,13 +8,15 @@
         <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
         <td><a href="{% url 'user' %}" id="user" style="text-decoration: none;">{{ user.username }}</a></td>
         <td><a href="{% url 'logout' %}" class="butt_red" onclick="return confirm('Ви впевнені, що хочете вийти?')"
-            >Вийти</a></td>
+        >Вийти</a></td>
         {% if request.user.is_staff %}
         <td><a href="{% url 'admin:index' %}" class="butt_green">Админ</a></td>
         <td><a href="{% url 'search' id=1 %}" class="butt_green">Всі</a></td>
         {% endif %}
     </tr>
+
 </table>
+
 
 {% else %}
 <table>
@@ -35,44 +37,83 @@
 {% endblock %}
 
 {% block navigation %}
+{% if user.is_authenticated %}
 
-    {% if user.is_authenticated %}
-        {% for cont in list_cont %}
-            <a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
-                    <div class="group">
-                        <table>
-                            <tr id="test">
-                                <td width="60"><img class="avatar" src="{{ cont.0.url }}" style="width:60px;"></td>
-                                <td>
-                                    <table>
-                                        <tr id="test">
-                                            <td height="15"><p id="mess">{{ cont.1 }}</p></td>
-                                        </tr>
-                                        <tr id="test">
-                                            <td  height="20"><p id="mess1">{{ cont.2 }}</p></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </a>
-        {% endfor %}
+<table class="user_change" width="396">
+    <tr>
+        <td><img src="{{ user_prof.avatar.url }}" style="width:110px;"></td>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <form method="POST" role="form" action="{% url 'change_avatar' id=user.id id1=2 %}">
+                             {% csrf_token %}
+                             <input type="text" class="info_change" name="phone" value="{{ user_prof.phone }}">
+                             <button type="submit" class="butt_green01">Змінити</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <form enctype="multipart/form-data" action="{% url 'change_avatar' id=user.id id1=1 %}" method="POST">
+                            {% csrf_token %}
+                            <input type="file" class="file" name="avatar">
+                            <button type="submit" class="butt_green01">Змінити аватарку</button>
+                        </form>
+                    </td>
 
-    {% else %}
+                </tr>
 
-    {% endif %}
+            </table>
 
+        </td>
+
+    </tr>
+
+</table>
+
+
+{% else %}
+
+{% endif %}
+
+
+{% if user.is_authenticated %}
+{% for cont in list_cont %}
+<a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
+    <div class="group">
+        <table>
+            <tr id="test">
+                <td width="60"><img class="avatar" src="{{ cont.0.url }}" style="width:60px;"></td>
+                <td>
+                    <table>
+                        <tr id="test">
+                            <td height="15"><p id="mess">{{ cont.1 }}</p></td>
+                        </tr>
+                        <tr id="test">
+                            <td height="20"><p id="mess1">{{ cont.2 }}</p></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</a>
+{% endfor %}
+
+{% else %}
+
+{% endif %}
 
 
 {% endblock %}
 
 {% block messeg %}
 <div class="search_result">
-<!--    <p id="mess">1</p>-->
+    <!--    <p id="mess">1</p>-->
     <div class="form_group_add">
         <form method="POST" role="form" action="{% url 'add_group' %}">
-                {% csrf_token %}
+            {% csrf_token %}
             <input type="text" class="group_form" name="name" placeholder="Назва вашої групи">
             <textarea class="text_area_group" name="description" placeholder="Опис вашої групи"></textarea>
             <button type="submit" class="butt_green">Створити</button>
@@ -81,20 +122,22 @@
 
     <div class="group_list">
 
-            {% for group in list_groups %}
-                <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
-                    <div class="group0" style="background: url('/media/fon1.jpg')">
-                        <p class="mess_g">{{ group.0 }}</p>
-                        <p class="mess_g_r">Постів {{ group.3 }}</p>
+        {% for group in list_groups %}
+        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
+            <div class="group0" style="background: url({{ group.5.url }})">
+                <p class="mess_g">{{ group.0 }}</p>
+                <td><a href="{% url 'dell_group' id=group.2 %}" class="butt_green"
+                       onclick="return confirm('Ви впевнені, що хочете видалити?')">dell</a></td>
+                <p class="mess_g_r">Постів {{ group.3 }}</p>
 
-                        <table  style="width:350px;">
-                            <tr id="test" >
-                                <td><p id="mess">{{ group.1 }}</p></td>
-                            </tr>
-                        </table>
-                    </div>
-                </a>
-            {% endfor %}
+                <table style="width:350px;">
+                    <tr id="test">
+                        <td><p id="mess">{{ group.1 }}</p></td>
+                    </tr>
+                </table>
+            </div>
+        </a>
+        {% endfor %}
 
 
     </div>

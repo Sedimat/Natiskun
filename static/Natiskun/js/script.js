@@ -2,6 +2,7 @@
 // лічильник повідомлень
 var count = 0;
 
+// додає повідомлення
 function dodavannya(user, text, time, side, place, img, link) {
     count++
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
@@ -146,10 +147,11 @@ function add_messeg_group(poss,list_post) {
   }
 };
 
-
+// виводе контакти
 function add_cont(list_c, user) {
   // Отримання елементу <div class="navigation">
   var navigationDiv = document.querySelector('.navigation');
+
 
   // Створення елемента <a>
   var link = document.createElement('a');
@@ -184,7 +186,7 @@ function add_cont(list_c, user) {
                         </tr>
                     </table>
                 </td>
-                <td height="15"><p id="mess" class="${list_c[1]}">${numb}</p></td>
+                <td height="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">💢</a><p id="mess" class="${list_c[1]}">${numb}</p></td>
             </tr>
         </table>
     </div>
@@ -206,7 +208,7 @@ function add_cont(list_c, user) {
                         </tr>
                     </table>
                 </td>
-                <td height="15"><p id="mess" class="${list_c[1]}">${numb}</p></td>
+                <td height="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">💢</a><p id="mess" class="${list_c[1]}">${numb}</p></td>
             </tr>
         </table>
     </div>
@@ -216,6 +218,7 @@ function add_cont(list_c, user) {
   // Додавання елемента <a> в <div class="navigation">
   navigationDiv.appendChild(link);
 };
+
 
 
 function dell_messeg() {
@@ -353,7 +356,7 @@ function handler(event) {
     var name = result[0];
     var link = result[1];
     var link0 = result[2];
-    console.log(link, name)
+    //console.log(link, name)
 
     if (link0 === "/") {
         runEverySecond()
@@ -384,7 +387,7 @@ function handler(event) {
         .then(data => {
             if (data.list_messegs.length > 0) {
                 for (let i = 0; i < data.list_messegs.length; i++) {
-                    console.log(data.list_messegs[i]);
+                    //console.log(data.list_messegs[i]);
                     add_messeg_group(1, data.list_messegs[i])
                 }
             }
@@ -441,14 +444,14 @@ if (group_form){
     if (a.key === 'Enter' && !a.shiftKey) {
         a.preventDefault();  // Заборона вставляння нового рядка
         var textarea = document.getElementById('group_form');
-        console.log(textarea.value)
+        //console.log(textarea.value)
         var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
         var result = link_name();
         var id = result[0];
         var link = result[1];
         var link0 = result[2];
-        console.log(name)
+        //console.log(name)
 
         var data = {
             messeg: textarea.value,
@@ -472,8 +475,8 @@ if (group_form){
         })
         .then(response => response.json())
         .then(data => {
-                console.log(data.username)
-                console.log(data.post)
+                //console.log(data.username)
+                //console.log(data.post)
                 add_messeg_group(1,data.post)
         });
         textarea.value = '';  // Після відправлення очистіть поле
@@ -491,7 +494,7 @@ if (myTextarea) {
         e.preventDefault();  // Заборона вставляння нового рядка
         var textarea = document.getElementById('myTextarea');
         var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-        console.log(textarea.value);
+        //console.log(textarea.value);
 
         var result = link_name();
         var name = result[0];
@@ -521,8 +524,8 @@ if (myTextarea) {
         .then(response => response.json())
         .then(data => {
             for(let i = 0; i < data.messegs.length; i++){
-                console.log(data.username)
-                console.log(data.messegs[i][0])
+                //console.log(data.username)
+                //console.log(data.messegs[i][0])
 
                 if (data.messegs[i][0][0] === data.username) {
                 dodavannya(data.messegs[i][0][0], data.messegs[i][0][1], data.messegs[i][0][2]
@@ -579,7 +582,7 @@ var divMesseg = document.querySelector('.div_messeg');
 divMesseg.addEventListener('scroll', function() {
     setTimeout(function(){
         var down = divMesseg.scrollHeight - divMesseg.clientHeight - 10;
-        console.log(divMesseg.scrollTop, -down);
+//        console.log(divMesseg.scrollTop, -down);
 
         if (divMesseg.scrollTop < -down) {
             console.log('Досягнуто нижньої границі', count);
@@ -592,61 +595,102 @@ divMesseg.addEventListener('scroll', function() {
     }, 50);
 });
 
-function square(x, y, color){
+
+
+
+
+// поверта дві латинські літери
+function r_word() {
+    var letters = 'abcdefghijklmnopqrstuvwxyz'; // Англійський алфавіт
+    var randomLetter1 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо першу букву
+    var randomLetter2 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо другу букву
+    var randomLetters = randomLetter1 + randomLetter2; // Об'єднуємо обидві букви
+    return randomLetters; // Повертаємо результат
+}
+
+
+function square1(x, y, color){
     var newDiv = document.createElement('div');
-    newDiv.style.width = '10px';
-    newDiv.style.height = '10px';
+    newDiv.style.width = '100px';
+    newDiv.style.height = '100px';
     newDiv.style.backgroundColor = color;
     newDiv.style.borderRadius = '5px';
     newDiv.style.position = 'absolute';
     newDiv.style.left = x + 'px';
     newDiv.style.top = y + 'px';
-    newDiv.style.boxShadow = '0 0 20px rgba(255, 255, 255, 1)';  // Додаємо напівпрозору тінь
-    newDiv.id = 'id_' + x;
-    newDiv.onmouseover = function() {
-        console.log('id_' + x)
-        print('id_' + x);
-    };
-    document.body.appendChild(newDiv);
-}
+    var lett = 'id_' + r_word();
+    newDiv.id = lett;
 
-function square1(x, y, color){
-    var newDiv = document.createElement('div');
-    newDiv.style.width = '10px';
-    newDiv.style.height = '10px';
-    newDiv.style.backgroundColor = color;
-    newDiv.style.borderRadius = '5px';
-    newDiv.style.position = 'absolute';
-    newDiv.style.left = x + 'px'; // Додаємо 300 пікселів до кожної позиції
-    newDiv.style.top = y + 'px';
     // Додавання нового елемента в DOM
     document.body.appendChild(newDiv);
+
+    var messageLink = document.createElement('a');
+    messageLink.href = '#'; // Посилання на створений дів
+    messageLink.innerText = 'Перейти1';
+    messageLink.id = 'link_js'; // Додаємо id 'mess'
+    newDiv.appendChild(messageLink); // Додавання посилання до body, а не нового діва
+
+    messageLink.addEventListener('click', test); // Додаємо обробник події click
+
+    var messageLink = document.createElement('a');
+    messageLink.href = '#'; // Посилання на створений дів
+    messageLink.innerText = 'Перейти2';
+    messageLink.id = 'link_js'; // Додаємо id 'mess'
+    newDiv.appendChild(messageLink); // Додавання посилання до body, а не нового діва
+
+    messageLink.addEventListener('click', test); // Додаємо обробник події click
+
+    var messageLink = document.createElement('a');
+    messageLink.href = '#'; // Посилання на створений дів
+    messageLink.innerText = 'Перейти3';
+    messageLink.id = 'link_js'; // Додаємо id 'mess'
+    newDiv.appendChild(messageLink); // Додавання посилання до body, а не нового діва
+
+    messageLink.addEventListener('click', test); // Додаємо обробник події click
+
+    setTimeout(function() {
+        checkClickOnDiv(lett);
+    }, 50);
+}
+
+function test(){
+    console.log("Нажав 22")
 }
 
 
-for (let i = 0; i < 600; i += 20) {
-    square(100 + i, 100, '#ff0505')
+function test_func(id){
+    var x = event.clientX;
+    var y = event.clientY;
+    console.log(x, y)
+    square1(x, y, "grey")
+
+
 }
 
-function print(id) {
-    var element = document.getElementById(id);
-    var currentPosition = parseInt(element.style.top); // отримуємо позицію елемента
-    var x = parseInt(element.style.left); // отримуємо позицію елемента
-    var rN = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+// Функція для видалення діва
+function removeSquare(id) {
+    var square = document.getElementById(id);
+    if (square) {
+        square.parentNode.removeChild(square);
+    }
+}
 
-    var targetPosition = currentPosition + rN;
-    var interval = setInterval(function() {
-        if (currentPosition >= targetPosition) {
-            clearInterval(interval);
+function checkClickOnDiv(id) {
+    document.addEventListener('click', function(event) {
+        if (event.target.id === id) {
+            console.log('Клікнуто на елементі з id:', id);
         } else {
-            currentPosition += 2;  // Швидкість опускання
-            if (currentPosition % 10 === 0){
-                square1(x, currentPosition, 'green')
+            console.log('Клікнуто на іншому елементі.');
+
+            var square = document.getElementById(id);
+            if (square) {
+                square.parentNode.removeChild(square);
             }
-            element.style.top = currentPosition + 10 + 'px';
+
         }
-    }, 10);  // Інтервал зміни позиції (кожні 10 мілісекунд)
+    });
 }
+
 
 
 //                divMesseg.style.overflow = 'hidden';

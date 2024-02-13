@@ -20,5 +20,9 @@ urlpatterns = [
     path("post_mess", views.post_mess, name='post_mess'),
     path("group_messeg", views.group_messeg, name='group_messeg'),
     path("group_js/<int:id>", views.group_js, name="group_js"),
+    path("dell_group/<int:id>", views.dell_group, name="dell_group"),
+    path("change_avatar/<int:id>/<int:id1>", views.change_avatar, name="change_avatar"),
+
+
 
 ]

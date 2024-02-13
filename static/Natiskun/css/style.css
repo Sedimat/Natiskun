@@ -109,6 +109,30 @@ header {
     width: 100px;
     height: 30px
 }
+
+.info_change{
+    border: none;
+    margin: 0px;
+    background-color: #434647;
+    font-family: cursive;
+    font-size: 16px;
+    color: white;
+    color: white;
+    width: 180px;
+    height: 30px
+}
+
+.butt_green01{
+    padding: 5px 8px 5px 8px;
+    margin: 0px;
+    border-radius: 5px;
+    font-family: cursive;
+    font-size: 14px;
+    background-color: greenyellow;
+}
+
+
+
 .butt_green{
     padding: 5px 8px 5px 8px;
     margin: 0px 0px 0px 5px;
@@ -415,4 +439,24 @@ header {
     margin: 2px 0px 2px 5px;
     border-radius: 10px;
     width: 800px;
+}
+
+.user_change{
+    background-color: black;
+    margin: 2px;
+    padding: 0px;
+
+}
+
+.file{
+    width: 120px;
+}
+
+#link_js{
+    float:left;
+    margin: 5px;
+    font-family: cursive;
+    font-size: 18px;
+    color: white;
+
 }
