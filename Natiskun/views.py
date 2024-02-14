@@ -25,7 +25,7 @@ def user_groups(user=None, name=None):
     list_groups = []
     for g in groups_of_user:
         len_messegs = GroupMesseg.objects.filter(id_group=g).count()
-        list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user),g.fon])
+        list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user), str(g.fon)])
     return {"list_groups": list_groups}
 
 
@@ -303,6 +303,7 @@ def index_js(request):
     if request.user.username:
         user = User.objects.get(username=request.user.username)
         context.update(list_contact(user))
+        context.update(user_groups(user)) # поверне в джс список груп користувача
     return JsonResponse(context)
 
 

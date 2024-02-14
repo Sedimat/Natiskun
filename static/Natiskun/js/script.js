@@ -147,6 +147,46 @@ function add_messeg_group(poss,list_post) {
   }
 };
 
+function add_group(list_g){
+
+    var navigationDiv = document.querySelector('.navigation');
+    var name = list_g[0]
+    var post = list_g[1]
+    var id = list_g[2]
+    var numb = list_g[3]
+    var img = list_g[5]
+
+  // Створення елемента <a>
+  var link = document.createElement('a');
+  link.href = "#";
+  link.style.textDecoration = 'none';
+
+  // Створення структури HTML та додавання її в елемент <a>
+  link.innerHTML = `
+      <div class="group0" style="background: url(/media/${img})">
+          <table >
+              <tr>
+                  <td width="350" class="mess_g">${name}</td>
+                  <td width="15">
+                      <a href="#" onclick="test_func(${id})" class="head_a">
+                          <img src="/media/seting.png" style="width:16px;">
+                      </a>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td class="mess_g_r">${post}</td>
+                  <td id="mess">${numb}</td>
+              </tr>
+
+          </table>
+      </div>
+  `;
+
+  // Додавання елемента <a> в <div class="navigation">
+  navigationDiv.appendChild(link);
+};
+
 // виводе контакти
 function add_cont(list_c, user) {
   // Отримання елементу <div class="navigation">
@@ -177,16 +217,18 @@ function add_cont(list_c, user) {
             <tr id="test">
                 <td width="60"><img class="avatar" src="/media/${list_c[0]}" style="width:60px;"></td>
                 <td>
-                    <table  width="250">
+                    <table>
                         <tr id="test">
-                            <td height="15"><p id="mess">${list_c[1]}</p></td>
+                            <td width="280"><p id="mess">${list_c[1]}</p></td>
+                            <td width="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">
+                            <img src="/media/seting.png" style="width:16px;">
+                            </a></td>
                         </tr>
                         <tr id="test">
-                            <td height="20"><p id="mess1">${messeg}</p></td>
+                            <td height="15"><p id="mess1">${messeg}</p></td>
+                            <td height="15"><p id="mess" class="${list_c[1]}">${numb}</p></td>
                         </tr>
                     </table>
-                </td>
-                <td height="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">💢</a><p id="mess" class="${list_c[1]}">${numb}</p></td>
             </tr>
         </table>
     </div>
@@ -199,16 +241,18 @@ function add_cont(list_c, user) {
             <tr id="test">
                 <td width="60"><img class="avatar" src="/media/${list_c[0]}" style="width:60px;"></td>
                 <td>
-                    <table  width="250">
+                    <table>
                         <tr id="test">
-                            <td height="15"><p id="mess">${list_c[1]}</p></td>
+                            <td width="280"><p id="mess">${list_c[1]}</p></td>
+                            <td width="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">
+                            <img src="/media/seting.png" style="width:16px;">
+                            </a></td>
                         </tr>
                         <tr id="test">
-                            <td height="20"><p id="mess1">${messeg}</p></td>
+                            <td height="15"><p id="mess1">${messeg}</p></td>
+                            <td height="15"><p id="mess" class="${list_c[1]}">${numb}</p></td>
                         </tr>
                     </table>
-                </td>
-                <td height="15"><a href="#" onclick="test_func(${list_c[5]})" class="head_a">💢</a><p id="mess" class="${list_c[1]}">${numb}</p></td>
             </tr>
         </table>
     </div>
@@ -363,13 +407,21 @@ function handler(event) {
         fetch(`/index_js`)  // Вказуємо URL для вашого Django view
         .then(response => response.json())
         .then(data => {
+            console.log(data.list_groups)
             if (data.list_cont.length > 0) {
-                // console.log(data.list_cont.length);
                 for (let i = 0; i < data.list_cont.length; i++) {
                     add_cont(data.list_cont[i], name);
 
                 }
             }
+            if (data.list_groups.length > 0){
+                for (let i = 0; i < data.list_groups.length; i++) {
+                    add_group(data.list_groups[i]);
+
+                }
+
+            }
+
         });
     }
 
@@ -661,8 +713,8 @@ function test(){
 function test_func(id){
     var x = event.clientX;
     var y = event.clientY;
-    console.log(x, y)
-    square1(x, y, "grey")
+    console.log(id)
+    square1(x, y, "#14171c")
 
 
 }
