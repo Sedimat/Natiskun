@@ -28,7 +28,7 @@
                         <td>
                             <form method="POST" role="form" action="{% url 'search' id=0 %}">
                                 {% csrf_token %}
-                                <input type="text" class="search_form" name="search"  placeholder="Знайти">
+                                <input type="text" class="search_form" name="search" placeholder="Знайти">
                                 <button type="submit" class="butt_search">🔎</button>
                             </form>
                         </td>

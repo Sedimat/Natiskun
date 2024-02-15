@@ -54,6 +54,26 @@
                 </a>
         {% endfor %}
 
+        {% for group in list_groups %}
+        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
+            <div class="group0" style="background: url(/media/{{ group.5 }})">
+
+                <table >
+                    <tr id="test" >
+                        <td width="350" class="mess_g">{{ group.0 }}</td>
+                        <td class="mess"><img src="/media/seting.png" style="width:16px;"></td>
+                    </tr>
+
+                    <tr id="test" >
+                        <td class="mess_g_r">{{ group.1 }}</td>
+                        <td class="mess">{{ group.3 }}</td>
+                    </tr>
+
+                </table>
+            </div>
+        </a>
+    {% endfor %}
+
 
     {% else %}
 
@@ -71,7 +91,7 @@
             <div class="search_group">
             <h1 id="mess">Результат пошуку користувачів:</h1>
 
-            {% for l in list_user %}
+            {% for l in double_list_user %}
 
             {% if l.0 != user.username %}
 
@@ -96,20 +116,20 @@
 
             <h1 id="mess">Результат пошуку групи:</h1>
 
-        {% for group in list_groups %}
-        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
-            <div class="group2" style="background: url({{ group.5.url }})">
-                <p class="mess_g">{{ group.0 }}</p>
-
-                <a href="{% url 'add_g' group.2 %}" class="butt_green">Додати</a>
-
-                <p class="mess_g_r">Постів {{ group.3 }}</p>
-
-
-                <table  style="width:350px;">
+        {% for group in list_groups1 %}
+        <a href="#" id="user" style="text-decoration: none;">
+            <div class="group2" style="background: url(/media/{{ group.5 }})">
+                <table >
                     <tr id="test" >
-                        <td><p id="mess">{{ group.1 }}</p></td>
+                        <td width="350" class="mess_g">{{ group.0 }}</td>
+                        <td class="mess"><a href="{% url 'add_g' group.2 %}" class="butt_green">Додати</a></td>
                     </tr>
+
+                    <tr id="test" >
+                        <td class="mess_g_r">{{ group.1 }}</td>
+                        <td class="mess">{{ group.3 }}</td>
+                    </tr>
+
                 </table>
             </div>
         </a>

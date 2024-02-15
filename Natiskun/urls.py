@@ -21,6 +21,9 @@ urlpatterns = [
     path("group_messeg", views.group_messeg, name='group_messeg'),
     path("group_js/<int:id>", views.group_js, name="group_js"),
     path("dell_group/<int:id>", views.dell_group, name="dell_group"),
+    path("dell_messeg/<int:id>/<str:name>", views.dell_messeg, name="dell_messeg"),
+    path("dell_group_user/<int:id>", views.dell_group_user, name="dell_group_user"),
+    path("dell_contact_user/<int:id>/<str:name>", views.dell_contact_user, name="dell_contact_user"),
     path("change_avatar/<int:id>/<int:id1>", views.change_avatar, name="change_avatar"),
 
 

@@ -79,6 +79,7 @@
 
 
 {% if user.is_authenticated %}
+
 {% for cont in list_cont %}
 <a href="{% url 'contact' cont.1 %}" style="text-decoration: none;">
     <div class="group">
@@ -122,22 +123,27 @@
 
     <div class="group_list">
 
-        {% for group in list_groups %}
-        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
-            <div class="group0" style="background: url({{ group.5.url }})">
-                <p class="mess_g">{{ group.0 }}</p>
-                <td><a href="{% url 'dell_group' id=group.2 %}" class="butt_green"
-                       onclick="return confirm('Ви впевнені, що хочете видалити?')">dell</a></td>
-                <p class="mess_g_r">Постів {{ group.3 }}</p>
 
-                <table style="width:350px;">
-                    <tr id="test">
-                        <td><p id="mess">{{ group.1 }}</p></td>
+        {% for group in list_group_own %}
+        <a href="{% url 'group' group.2 %}" id="user" style="text-decoration: none;">
+            <div class="group0" style="background: url(media/{{ group.5 }})">
+
+                <table >
+                    <tr id="test" >
+                        <td width="350" class="mess_g">{{ group.0 }}</td>
+                        <td class="mess"><a href="{% url 'dell_group' id=group.2 %}" class="butt_green"
+                       onclick="return confirm('Ви впевнені, що хочете видалити?')">dell</a></td>
                     </tr>
+
+                    <tr id="test" >
+                        <td class="mess_g_r">{{ group.1 }}</td>
+                        <td class="mess">{{ group.3 }}</td>
+                    </tr>
+
                 </table>
             </div>
         </a>
-        {% endfor %}
+    {% endfor %}
 
 
     </div>

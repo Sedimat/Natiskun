@@ -34,6 +34,7 @@ header {
     font-size: 16px;
     color: white;
     margin: 10px 0px 10px 10px;
+    padding: 0px 0px 0px 10px;
     width: 350px;
     height: 33px
 }
@@ -214,7 +215,7 @@ header {
     display: flex;
     flex-direction: column-reverse;
     width: 850px;
-    height: calc(100vh - 1px);
+    height: calc(120vh - 1px);
     overflow-y: auto; /* Замініть scroll на auto, щоб вивести скрол тільки при потребі */
     overflow-x: hidden;
     scrollbar-width: thin;

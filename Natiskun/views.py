@@ -17,6 +17,7 @@ def user_groups(user=None, name=None):
     groups_of_user = None
     if name:
         groups_of_user = Group.objects.filter(name=name)
+
     else:
         if user:
             user_p = UserProfile.objects.get(id_user=user)
@@ -26,7 +27,21 @@ def user_groups(user=None, name=None):
     for g in groups_of_user:
         len_messegs = GroupMesseg.objects.filter(id_group=g).count()
         list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user), str(g.fon)])
+
     return {"list_groups": list_groups}
+
+
+def search_groups(name=None):
+    # повертає список груп
+    groups_of_user = Group.objects.filter(name=name)
+
+    list_groups1 = []
+    for g in groups_of_user:
+        len_messegs = GroupMesseg.objects.filter(id_group=g).count()
+        list_groups1.append([g.name, g.description, g.id, len_messegs, str(g.id_user), str(g.fon)])
+    print(list_groups1)
+
+    return {"list_groups1": list_groups1}
 
 
 def extract_image_links(text):
@@ -107,9 +122,9 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
             img_list = json.loads(m.messeg_2)
             link_list = json.loads(m.messeg_3)
             if m.user_2 == "1":
-                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✅"], img_list, link_list])
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✅", m.id], img_list, link_list])
             else:
-                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉"], img_list, link_list])
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉", m.id], img_list, link_list])
 
             if user.username != m.user_1:
                 id_list.append(m.id)
@@ -157,7 +172,6 @@ def index(request):
         list_group = Group.objects.filter(id_user=user)
         context.update({"list_group": list_group})
 
-        context.update(user_groups(user)) # виводе групи користувача
 
     if request.method == "POST":
         search = request.POST.get('search')
@@ -190,6 +204,7 @@ def search(request, id=None):
         context.update({"user": user})
         context.update(U_Prof(request))
         context.update(contact_list(user))  # отримуемо список контактів
+        context.update(user_groups(user))  # список груп користувача
     else:
         return redirect('index')
 
@@ -199,28 +214,30 @@ def search(request, id=None):
         for i in list_user:
             user_p = UserProfile.objects.get(id_user=i.id)
             double_list_user.append([i.username, user_p.avatar, i.id])
-        context.update({"list_user": double_list_user})
+        context.update({"double_list_user": double_list_user})
 
         groups_of_user = Group.objects.all()
-        list_groups = []
+        list_groups1 = []
         for g in groups_of_user:
             len_messegs = GroupMesseg.objects.filter(id_group=g).count()
-            list_groups.append([g.name, g.description, g.id, len_messegs, str(g.id_user),g.fon])
+            list_groups1.append([g.name, g.description, g.id, len_messegs, str(g.id_user),g.fon])
 
-        context.update({"list_groups": list_groups})
+        context.update({"list_groups1": list_groups1})
 
 
     if request.method == "POST":
         search = request.POST.get('search')
-        if search:
+        if search != '':
+
             list_user = User.objects.filter(username__icontains=search)
             double_list_user = []
             for i in list_user:
                 user_p = UserProfile.objects.get(id_user=i.id)
                 double_list_user.append([i.username, user_p.avatar, i.id])
 
-            context.update(user_groups(name=search))  # виводе групи користувача
-            context.update({"list_user": double_list_user})
+            context.update(search_groups(name=search))  # виводе групи користувача
+
+            context.update({"double_list_user": double_list_user})
 
     return render(request, 'Natiskun/search.html', context=context)
 
@@ -265,7 +282,6 @@ def contact(request, name=None, id=None):
         list_group = Group.objects.filter(id_user=user)
         context.update({"list_group": list_group})
 
-        context.update(user_groups(user)) # виводе групи користувача
 
     else:
         return redirect('index')
@@ -281,7 +297,6 @@ def get_data(request, name=None, id=None):
         if id == 0:
             context.update({"username": user.username})
             context.update(list_messeg(user, name, 1))
-            context.update(list_contact(user))
         else:
             context.update({"username": user.username})
             context.update(list_messeg(user, name, 1, add=id))
@@ -358,6 +373,12 @@ def user(request):
 
         context.update(user_groups(user)) # виводе групи користувача
 
+        groups = Group.objects.filter(id_user=user)
+        list_group_own = []
+        for g in groups:
+            len_messegs = GroupMesseg.objects.filter(id_group=g).count()
+            list_group_own.append([g.name, g.description, g.id, len_messegs, str(g.id_user), str(g.fon)])
+        context.update({"list_group_own":list_group_own})
 
     return render(request, 'Natiskun/user.html', context=context)
 
@@ -386,8 +407,6 @@ def group(request, id=None):
 
         group = Group.objects.get(id=id)
         context.update({"username": str(group.id_user)})
-
-        context.update(user_groups(user)) # виводе групи користувача
 
     return render(request, 'Natiskun/group.html', context=context)
 
@@ -432,6 +451,7 @@ def group_js(request, id=None):
 
     context.update({"list_messegs": list_messegs})
 
+
     return JsonResponse(context)
 
 
@@ -465,3 +485,29 @@ def dell_group(request, id=None):
     group = Group.objects.get(id=id)
     group.delete()
     return redirect('user')
+
+
+def dell_messeg(request, id=None, name=None):
+    messeg = Messeg.objects.get(id=id)
+    messeg.delete()
+    return redirect(f'/contact/{name}')
+
+
+def dell_group_user(request, id=None):
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        groups = Group.objects.filter(id_user=user)
+        user_profile = UserProfile.objects.get(id_user=user)
+        group_to_remove = Group.objects.get(id=id)
+        if group_to_remove not in groups:
+            user_profile.groups.remove(group_to_remove)
+
+    return redirect('index')
+
+
+def dell_contact_user(request, id=None, name=None):
+    if request.user.username:
+        user = User.objects.get(id=id)
+        contact = UserList.objects.get(list_user=user)
+        contact.delete()
+    return redirect(f'/contact/{name}')
