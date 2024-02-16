@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
-from .models import UserProfile, UserList, Messeg, Group, GroupMesseg
+from .models import UserProfile, UserList, Messeg, Group, GroupMesseg, CommentsGroupMesseg
 from django.db.models import Q
 import random
 import string
@@ -511,3 +511,40 @@ def dell_contact_user(request, id=None, name=None):
         contact = UserList.objects.get(list_user=user)
         contact.delete()
     return redirect(f'/contact/{name}')
+
+
+def comments(request, id=None):
+    context = {}
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        context.update({"user": user})
+        context.update(U_Prof(request))
+
+        post = GroupMesseg.objects.get(id=id)
+
+        img_list = json.loads(post.messeg_2)
+        link_list = json.loads(post.messeg_3)
+        list_post = [post.messeg_1, post.timestamp, img_list, link_list, id]
+
+        context.update({"list_post": list_post})
+
+        comments = CommentsGroupMesseg.objects.filter(id_group=post).order_by('-timestamp')
+
+        context.update({"comments": comments})
+
+
+    return render(request, 'Natiskun/comments.html', context=context)
+
+
+def add_comments(request, id=None):
+    if request.user.username:
+        user = User.objects.get(username=request.user.username)
+        if request.method == "POST":
+            comments = request.POST.get('comments')
+            if comments:
+                print(comments)
+                post = GroupMesseg.objects.get(id=id)
+                comment = CommentsGroupMesseg(id_group=post, id_user=user, messeg_1=comments)
+                comment.save()
+
+    return redirect(f'/comments/{id}')

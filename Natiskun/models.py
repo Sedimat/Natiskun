@@ -49,7 +49,7 @@ class Group(models.Model):
         verbose_name_plural = "Групи"
 
 class GroupMesseg(models.Model):
-    id_group = models.ForeignKey(Group, on_delete=models.CASCADE,verbose_name="Користувач")
+    id_group = models.ForeignKey(Group, on_delete=models.CASCADE,verbose_name="Група")
     messeg_1 = models.TextField(blank=True, verbose_name="Повідомленя 1")
     messeg_2 = models.TextField(blank=True, verbose_name="Посилання Зображеня")
     messeg_3 = models.TextField(blank=True, verbose_name="Посилання")
@@ -61,6 +61,21 @@ class GroupMesseg(models.Model):
     class Meta:
         verbose_name = "Повідомлення групи"
         verbose_name_plural = "Повідомлення групи"
+
+class CommentsGroupMesseg(models.Model):
+    id_group = models.ForeignKey(GroupMesseg, on_delete=models.CASCADE,verbose_name="Пост")
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="Користувач")
+    messeg_1 = models.TextField(blank=True, verbose_name="Повідомленя 1")
+    messeg_2 = models.TextField(blank=True, verbose_name="Посилання Зображеня")
+    messeg_3 = models.TextField(blank=True, verbose_name="Посилання")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Коментарі'
+
+    class Meta:
+        verbose_name = "Коментарі"
+        verbose_name_plural = "Коментарі"
 
 class UserProfile(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")

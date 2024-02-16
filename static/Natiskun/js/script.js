@@ -110,6 +110,7 @@ function add_messeg_group(poss,list_post) {
   var time = list_post[3]
   var img = list_post[1]
   var l_link = list_post[2]
+  var id = list_post[4]
 
 
   var div_messeg = document.querySelector('.div_messeg');
@@ -161,7 +162,7 @@ function add_messeg_group(poss,list_post) {
 
     // Створення елемента <a> з посиланням
     var linkElement = document.createElement('a');
-    linkElement.href = '/user';
+    linkElement.href = '/comments/' + id;
     linkElement.textContent = 'Коментарі:';
     linkElement.classList.add('link_group');
 

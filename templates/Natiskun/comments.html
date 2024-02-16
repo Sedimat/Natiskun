@@ -1,0 +1,87 @@
+{% extends "Natiskun/base.html" %}
+
+{% block login %}
+
+{% if user.is_authenticated %}
+<table>
+    <tr>
+        <td width="50"><img class="avatar" src="{{ user_prof.avatar.url }}" style="width:50px;"></td>
+        <td><a href="{% url 'user' %}" id="user" style="text-decoration: none;">{{ user.username }}</a></td>
+
+    </tr>
+</table>
+
+{% else %}
+<table>
+    <tr>
+        <td width="300">
+            <form method="POST" role="form" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" class="log_form" name="username" id="username0" placeholder="Ваш нікнейм">
+                <input type="password" class="log_form" name="password" id="password0" placeholder="Пароль">
+                <button type="submit" class="butt_green">Війти</button>
+            </form>
+        </td>
+        <td><a class="butt_red" href="#">Реєстрація</a></td>
+    </tr>
+</table>
+{% endif %}
+
+{% endblock %}
+
+{% block navigation %}
+
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block messeg %}
+
+    {% for com in comments %}
+            <div class="group_messeg">
+                <p id="mess">{{ com.messeg_1 }}</p>
+                <p id="time_g">{{ com.timestamp }}</p>
+            </div>
+    {% endfor %}
+
+    <div class="group_messeg">
+        {% for img in list_post.2 %}
+            <img class="img_group" src="{{ img }}">
+
+        {% endfor %}
+
+
+        <p id="mess">{{ list_post.0 }}</p>
+        <p id="time_g">{{ list_post.1 }}</p>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block messeg_form %}
+
+
+        <table>
+            <tr>
+                <form method="POST" role="form" action="{% url 'add_comments' list_post.4 %}">
+                    {% csrf_token %}
+                    <td>
+                        <textarea class="text_group" name="comments" placeholder="Повідомленя"></textarea>
+                        <button type="submit" class="butt_search">Відправити</button>
+                    </td>
+                </form>
+            </tr>
+
+        </table>
+
+
+{% endblock %}
