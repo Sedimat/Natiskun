@@ -162,7 +162,7 @@ header {
     display: flex;
 }
 #li {
-    margin: 20px 70px 20px 70px;
+    margin: 20px 10px 20px 10px;
 }
 
 .head_a{
@@ -262,17 +262,31 @@ header {
 }
 
 .group_messeg{
-    border-radius: 10px;
-    margin: 2px 20px 2px 20px;
+    border-radius: 10px 10px 0px 0px;
+    margin: 0px 20px 2px 20px;
     width: 810px;
-    background-color: #363124;
+    background-color: #523d06;
+}
+
+.group_comments{
+    border-radius: 0px 0px 10px 10px;
+    margin: 2px 20px 10px 20px;
+    width: 810px;
+    background-color: #523d06;
+}
+
+.comments{
+    border-radius: 10px;
+    margin: 0px 20px 5px 20px;
+    width: 810px;
+    background-color: #523d06;
 }
 
 .link_group{
     float: left;
     margin: 2px 2px 2px 10px;
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: white;
 
 }
@@ -314,6 +328,13 @@ header {
     margin: 0px 10px 0px 10px;
     font-family: cursive;
     font-size: 18px;
+    color: white;
+}
+
+#mess_time{
+    margin: 0px 2px 0px 2px;
+    font-family: cursive;
+    font-size: 14px;
     color: white;
 }
 
@@ -364,7 +385,7 @@ header {
 }
 #time_g{
     float: right;
-    margin: 2px 5px 2px 2px;
+    margin: 10px 5px 2px 2px;
     font-family: sans-serif;
     font-size: 12px;
     color: white;

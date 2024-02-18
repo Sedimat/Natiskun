@@ -548,3 +548,9 @@ def add_comments(request, id=None):
                 comment.save()
 
     return redirect(f'/comments/{id}')
+
+
+def inventory(request):
+    context = {}
+
+    return render(request, 'Natiskun/inventory.html', context=context)

@@ -6,6 +6,7 @@
 
     {% load static %}
     <link href="{% static 'Natiskun/css/style.css' %}" rel="stylesheet">
+    <link rel="icon" href="/media/seting.png" type="image/x-icon">
 </head>
 
 <body>
@@ -14,7 +15,9 @@
             <nav>
                 <ul id="nav">
                     <li id="li"><a class="head_a" href="{% url 'index' %}">NatiSkun</a></li>
-                    <li id="li"><button onclick="add_group()">Тест</button></li>
+                    <li id="li"><a class="head_a" href="{% url 'inventory' %}">Inventory</a></li>
+
+                    <li id="li"><button onclick="play()">Play</button></li>
                 <!--<li id="li"><a class="head_a" href="#">Контакти</a></li>
 -->
                 </ul>

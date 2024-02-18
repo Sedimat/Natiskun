@@ -1,0 +1,40 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #1f2733;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    display: flex;
+    background-color: black;
+    margin: auto;
+    width: 1250px;
+    height: 60px;
+}
+
+.div_li{
+    flex: 2;
+    width: 300px;
+}
+
+#li {
+    margin: 20px 10px 20px 10px;
+}
+
+#nav{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.head_a{
+    text-decoration: none;
+    font-family: Verdana;
+    font-size: 18px;
+    color: white;
+
+}

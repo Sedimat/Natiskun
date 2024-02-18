@@ -153,12 +153,15 @@ function add_messeg_group(poss,list_post) {
     messElement.textContent = messeg;
     group_messeg.appendChild(messElement);
 
+  var group_messeg0 = document.createElement('div');
+  group_messeg0.classList.add('group_comments');
+
     var timeElement = document.createElement('p');
     timeElement.id = 'time_g';
     timeElement.textContent = time;
 
     // Додавання тексту повідомлення та часу до елемента <div>
-    group_messeg.appendChild(timeElement);
+    group_messeg0.appendChild(timeElement);
 
     // Створення елемента <a> з посиланням
     var linkElement = document.createElement('a');
@@ -167,15 +170,20 @@ function add_messeg_group(poss,list_post) {
     linkElement.classList.add('link_group');
 
     // Додавання елемента <a> до елемента <div class="group_messeg">
-    group_messeg.appendChild(linkElement);
+    group_messeg0.appendChild(linkElement);
 
   // Додавання елемента <a> в <div class="navigation">
   if(poss === 1){
   div_messeg.insertBefore(group_messeg, div_messeg.firstChild);
+  div_messeg.insertBefore(group_messeg0, div_messeg.firstChild);
   }else{
   div_messeg.appendChild(group_messeg);
+  div_messeg.appendChild(group_messeg0);
   }
+
+
 };
+
 
 // виводить групи користувача
 function add_group(list_g){
@@ -797,6 +805,65 @@ function checkClickOnDiv(id) {
         }
     });
 }
+
+function formatTime(seconds) {
+    // Отримання хвилин
+    let minutes = Math.floor(seconds / 60);
+    // Отримання секунд
+    let remainingSeconds = Math.round(seconds % 60);
+
+    // Перетворення чисел до строкового формату та додавання ведучих нулів для однозначних чисел
+    let formattedMinutes = (minutes < 10 ? '0' : '') + minutes;
+    let formattedSeconds = (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+
+    // Повернення результуючого форматованого часу
+    return formattedMinutes + ':' + formattedSeconds;
+}
+
+var audio = new Audio('/media/sounds/knopka.ogg');
+var audio1 = new Audio('/media/sounds/test.mp3');
+
+function play(){
+    audio1.play();
+    audio1.volume = 0.2;
+
+    var interval = setInterval(function() {
+
+        if (!audio1.paused && !audio1.ended) {
+            let messTimeElement = document.getElementById('mess_time');
+            messTimeElement.textContent = formatTime(audio1.currentTime);
+
+            // Обчислити відсоток
+            let percentage = (audio1.currentTime / audio1.duration) * 100;
+            let roundedNumber = Math.round(percentage);
+
+            let inputElement = document.getElementById('playControl');
+
+            inputElement.value = roundedNumber;
+        } else {
+            clearInterval(interval); // Зупинити інтервал, якщо відтворення призупинено або завершено
+        }
+    }, 1000); // Інтервал у мілісекундах (1 секунда = 1000 мс)
+}
+
+function stop(){
+   audio1.pause();
+}
+
+var volumeControl = document.getElementById('volumeControl');
+volumeControl.addEventListener('input', function() {
+    var volumeValue = volumeControl.value;
+    audio1.volume = volumeValue
+});
+
+
+var playControl = document.getElementById('playControl');
+    playControl.addEventListener('input', function() {
+    var playControl0 = playControl.value;
+    let number = (playControl0 / 100) * audio1.duration;
+    audio1.currentTime = number
+});
+
 
 
 

@@ -72,6 +72,14 @@
 
 </table>
 
+<div class="group">
+    <button onclick="play()">Play</button>
+    <button onclick="stop()">Pause</button>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.1" style="width: 100px;">
+    <p id="mess_time">00:00</p>
+    <input type="range" id="playControl" min="0" max="100" step="1" value="0" style="width: 300px;">
+</div>
+
 
 {% else %}
 
@@ -100,6 +108,8 @@
         </table>
     </div>
 </a>
+
+
 {% endfor %}
 
 {% else %}
@@ -111,6 +121,8 @@
 
 {% block messeg %}
 <div class="search_result">
+
+
     <!--    <p id="mess">1</p>-->
     <div class="form_group_add">
         <form method="POST" role="form" action="{% url 'add_group' %}">
