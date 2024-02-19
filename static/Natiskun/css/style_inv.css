@@ -38,3 +38,12 @@ header {
     color: white;
 
 }
+
+.content {
+    display: flex;
+    height: 200px;
+    background-color: #292626;
+    margin: auto;
+    width: 1250px;
+
+}

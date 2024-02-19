@@ -554,3 +554,13 @@ def inventory(request):
     context = {}
 
     return render(request, 'Natiskun/inventory.html', context=context)
+
+
+def load_sound(request):
+    if request.method == 'POST' and request.FILES['audio_blob']:
+        audio_blob = request.FILES['audio_blob']
+        print(audio_blob)
+        # Обробка та збереження файлу, конвертація у mp3, якщо потрібно
+        return JsonResponse({'message': 'Файл успішно завантажено'})
+    else:
+        return JsonResponse({'message': 'Не завантажився'})

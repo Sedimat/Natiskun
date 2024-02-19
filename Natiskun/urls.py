@@ -28,6 +28,7 @@ urlpatterns = [
     path("dell_group_user/<int:id>", views.dell_group_user, name="dell_group_user"),
     path("dell_contact_user/<int:id>/<str:name>", views.dell_contact_user, name="dell_contact_user"),
     path("change_avatar/<int:id>/<int:id1>", views.change_avatar, name="change_avatar"),
+    path("load_sound", views.load_sound, name="load_sound"),
 
 
 

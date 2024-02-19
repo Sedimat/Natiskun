@@ -26,6 +26,14 @@
     </header>
 
     <div class="content">
+        <div>
+            {% csrf_token %}
+            <button onmousedown="record()" onmouseup="stop()">Record</button>
+            <button onclick="play_r()">Play</button>
+            <button onclick="send()">Send</button>
+
+        </div>
+
 
 
     </div>
