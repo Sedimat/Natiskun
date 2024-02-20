@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
-from .models import UserProfile, UserList, Messeg, Group, GroupMesseg, CommentsGroupMesseg
+from .models import UserProfile, UserList, Messeg, Group, GroupMesseg, CommentsGroupMesseg, SoundMesseg
 from django.db.models import Q
 import random
 import string
@@ -113,6 +113,7 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
                   :len_m]  # сортує по даті додавання та видає обмежену кількість
     else:
         messegs = Messeg.objects.filter(key=key).order_by("-timestamp")[add:add + 10]
+
     if x == 0:
         return {"messegs": messegs}
     else:
@@ -121,10 +122,14 @@ def list_messeg(user, name, x=0, len_m=15, add=0):
         for m in messegs:
             img_list = json.loads(m.messeg_2)
             link_list = json.loads(m.messeg_3)
+            list_sounds = []
+            sounds = SoundMesseg.objects.filter(id_m=m)
+            for s in sounds:
+                list_sounds.append(str(s.file))
             if m.user_2 == "1":
-                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✅", m.id], img_list, link_list])
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✅", m.id], img_list, link_list, list_sounds])
             else:
-                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉", m.id], img_list, link_list])
+                list_messeg.append([[m.user_1, m.messeg_1, m.timestamp.strftime("%H:%M") + " ✉", m.id], img_list, link_list, list_sounds])
 
             if user.username != m.user_1:
                 id_list.append(m.id)
@@ -489,6 +494,9 @@ def dell_group(request, id=None):
 
 def dell_messeg(request, id=None, name=None):
     messeg = Messeg.objects.get(id=id)
+    s_mess = SoundMesseg.objects.filter(id_m=messeg)
+    for s in s_mess:
+        s.file.delete()
     messeg.delete()
     return redirect(f'/contact/{name}')
 
@@ -557,10 +565,37 @@ def inventory(request):
 
 
 def load_sound(request):
+    context = {}
     if request.method == 'POST' and request.FILES['audio_blob']:
         audio_blob = request.FILES['audio_blob']
-        print(audio_blob)
+        name = request.POST.get('name')
+        if request.user.username:
+            user = User.objects.get(username=request.user.username)
+
+            user_p = UserProfile.objects.get(id_user=user)
+            user1 = User.objects.get(username=name)
+            user_p1 = UserProfile.objects.get(id_user=user1)
+
+            key = ""
+            if user.id < user1.id:
+                key = f"{user_p.key}{user_p1.key}"
+            else:
+                key = f"{user_p1.key}{user_p.key}"
+
+            json_list_mess = json.dumps([])
+            json_list_link = json.dumps([])
+
+            mess = Messeg(key=key, user_1=user.username, messeg_1="",
+                               messeg_2=json_list_mess, messeg_3=json_list_link)
+            mess.save()
+
+
+
+            s_mess = SoundMesseg(id_m=mess, file=audio_blob)
+            s_mess.save()
+
+            context.update({"username": user.username})
+            context.update(list_messeg(user, name, 1, 1))
+
         # Обробка та збереження файлу, конвертація у mp3, якщо потрібно
-        return JsonResponse({'message': 'Файл успішно завантажено'})
-    else:
-        return JsonResponse({'message': 'Не завантажився'})
+        return JsonResponse(context)

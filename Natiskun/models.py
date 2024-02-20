@@ -27,11 +27,22 @@ class Messeg(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Повідомлення'
+        return f'Повідомлення: {self.messeg_1}  {self.timestamp}'
 
     class Meta:
         verbose_name = "Повідомлення"
         verbose_name_plural = "Повідомлення"
+
+class SoundMesseg(models.Model):
+    id_m = models.ForeignKey(Messeg, on_delete=models.CASCADE, verbose_name="Повідомленя")
+    file = models.FileField(upload_to='sound', default='sound/test.mp3')
+
+    def __str__(self):
+        return f'файл {self.id_m}'
+
+    class Meta:
+        verbose_name = "Звук"
+        verbose_name_plural = "Звуки"
 
 class Group(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Користувач")
@@ -39,6 +50,7 @@ class Group(models.Model):
     description = models.TextField(blank=True, verbose_name="Опис")
     fon = models.ImageField(upload_to='group', default='group/fon1.jpg')
     timestamp = models.DateTimeField(auto_now_add=True)
+
 
 
     def __str__(self):

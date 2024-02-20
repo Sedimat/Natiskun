@@ -2,6 +2,74 @@
 // лічильник повідомлень
 var count = 0;
 
+
+
+// вставляє елемент звука
+function sound_element(divelement, s) {
+    // Створення діву з класом sounds
+    var soundsDiv = document.createElement('div');
+    soundsDiv.classList.add('sounds');
+    var sound = '/media/' + s;
+    var word = r_word();
+
+    // Створення кнопки play
+    var playButton = document.createElement('button');
+    playButton.textContent = '➤';
+    playButton.classList.add('cl')
+    playButton.id = 'cl'+ word; // Враховуйте, що ID повинні бути унікальними
+    playButton.onclick = function() {
+    play(word, sound);
+    };
+
+    // Створення кнопки stop
+    var stopButton = document.createElement('button');
+    stopButton.textContent = '❚❚';
+    stopButton.classList.add('cl')
+    stopButton.id = 'cl'+ word + "s"; // Враховуйте, що ID повинні бути унікальними
+    stopButton.onclick = function() {
+    stop(word);
+    };
+
+    // Створення ползунка для гучності
+    var volumeInput = document.createElement('input');
+    volumeInput.type = 'range';
+    volumeInput.classList.add('volumeControl')
+    volumeInput.id = 'volumeControl' + word;
+    volumeInput.min = '0';
+    volumeInput.max = '1';
+    volumeInput.step = '0.01';
+    volumeInput.value = '1';
+
+    // Створення ползунка для контролю відтворення
+    var playInput = document.createElement('input');
+    playInput.type = 'range';
+    playInput.classList.add('playControl')
+    playInput.id = 'playControl' + word;
+    playInput.min = '0';
+    playInput.max = '100';
+    playInput.step = '1';
+    playInput.value = '0';
+
+    // Створення абзацу для відображення часу
+    var messTimeParagraph = document.createElement('p');
+    messTimeParagraph.classList.add('mess_time')
+    messTimeParagraph.id = 'mess_time' + word;
+    messTimeParagraph.textContent = '00:00';
+
+    // Додавання елементів до діву sounds
+    soundsDiv.appendChild(playButton);
+    soundsDiv.appendChild(stopButton);
+    soundsDiv.appendChild(volumeInput);
+    soundsDiv.appendChild(playInput);
+    soundsDiv.appendChild(messTimeParagraph);
+
+    // Додавання діву sounds на сторінку
+    document.body.appendChild(soundsDiv);
+
+    divelement.appendChild(soundsDiv)
+}
+
+
 // додає повідомлення
 function dodavannya(list_m, side, place) {
     var user = list_m[0][0]
@@ -10,6 +78,8 @@ function dodavannya(list_m, side, place) {
     var id = list_m[0][3]
     var img = list_m[1]
     var link = list_m[2]
+    var sounds = list_m[3]
+
 
     count++
     // Отримуємо батьківський елемент, до якого будемо додавати новий контент
@@ -30,6 +100,7 @@ function dodavannya(list_m, side, place) {
     linkElement.id = 'time_g';
     linkElement.style.display = 'block';
     newDivElement.appendChild(linkElement);
+
 
     // Створення елементу <img> з зображенням
     var imgElement = document.createElement('img');
@@ -87,6 +158,14 @@ function dodavannya(list_m, side, place) {
     messageElement.textContent = text;
 
     newDivElement.appendChild(messageElement);
+
+    // додає елемент звука
+    if (sounds.length != 0){
+        for (let i = 0; i < sounds.length; i++) {
+            sound_element(newDivElement, sounds[i])
+        }
+    }
+
 
     var timeElement = document.createElement('p');
     timeElement.id = 'time';
@@ -705,7 +784,9 @@ function r_word() {
     var letters = 'abcdefghijklmnopqrstuvwxyz'; // Англійський алфавіт
     var randomLetter1 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо першу букву
     var randomLetter2 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо другу букву
-    var randomLetters = randomLetter1 + randomLetter2; // Об'єднуємо обидві букви
+    var randomLetter3 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо другу букву
+
+    var randomLetters = randomLetter1 + randomLetter2 + randomLetter3; // Об'єднуємо обидві букви
     return randomLetters; // Повертаємо результат
 }
 
@@ -820,49 +901,151 @@ function formatTime(seconds) {
     return formattedMinutes + ':' + formattedSeconds;
 }
 
-var audio = new Audio('/media/sounds/knopka.ogg');
-var audio1 = new Audio('/media/sounds/test.mp3');
 
-function play(){
+var audio1;
+
+function play(word,sound){
+    audio1 = new Audio(sound);
     audio1.play();
-    audio1.volume = 0.2;
+    audio1.volume = 1;
 
     var interval = setInterval(function() {
 
         if (!audio1.paused && !audio1.ended) {
-            let messTimeElement = document.getElementById('mess_time');
+            let messTimeElement = document.getElementById('mess_time' + word);
             messTimeElement.textContent = formatTime(audio1.currentTime);
 
             // Обчислити відсоток
             let percentage = (audio1.currentTime / audio1.duration) * 100;
-            let roundedNumber = Math.round(percentage);
 
-            let inputElement = document.getElementById('playControl');
+            let inputElement = document.getElementById('playControl' + word);
 
-            inputElement.value = roundedNumber;
+            inputElement.value = percentage;
         } else {
             clearInterval(interval); // Зупинити інтервал, якщо відтворення призупинено або завершено
         }
-    }, 1000); // Інтервал у мілісекундах (1 секунда = 1000 мс)
+    }, 200); // Інтервал у мілісекундах (1 секунда = 1000 мс)
+
+    var volumeControl = document.getElementById('volumeControl' + word);
+    volumeControl.addEventListener('input', function() {
+        var volumeValue = volumeControl.value;
+        audio1.volume = volumeValue
+    });
+
+
+    var playControl = document.getElementById('playControl' + word);
+        playControl.addEventListener('input', function() {
+        var playControl0 = playControl.value;
+        let number = (playControl0 / 100) * audio1.duration;
+        audio1.currentTime = number
+    });
+
+
 }
 
-function stop(){
-   audio1.pause();
+function stop() {
+    audio1.pause();
 }
 
-var volumeControl = document.getElementById('volumeControl');
-volumeControl.addEventListener('input', function() {
-    var volumeValue = volumeControl.value;
-    audio1.volume = volumeValue
-});
 
 
-var playControl = document.getElementById('playControl');
-    playControl.addEventListener('input', function() {
-    var playControl0 = playControl.value;
-    let number = (playControl0 / 100) * audio1.duration;
-    audio1.currentTime = number
-});
+var mediaRecorder; // Глобальна змінна для об'єкта MediaRecorder
+var chunks = []; // Масив для зберігання аудіоданих
+
+function record() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+            // Створити новий MediaRecorder об'єкт для запису аудіо
+            mediaRecorder = new MediaRecorder(stream);
+
+            // Додати обробник події для отримання аудіоданих
+            mediaRecorder.ondataavailable = function(e) {
+                chunks.push(e.data);
+            };
+
+            // Почати запис аудіо
+            mediaRecorder.start();
+        })
+        .catch(function(err) {
+            console.error('Помилка отримання доступу до мікрофону:', err);
+        });
+}
+
+function stop_r() {
+    // Перевірка, чи об'єкт MediaRecorder існує
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        // Зупинити запис аудіо
+        mediaRecorder.stop();
+
+        // Додати обробник події для завершення запису
+        mediaRecorder.onstop = function() {
+            // Створити Blob з аудіоданих
+            var blob = new Blob(chunks, { type: 'audio/mp3' });
+
+            var csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            // Створення об'єкту FormData для відправки даних на сервер
+            var formData = new FormData();
+            formData.append('csrfmiddlewaretoken', csrftoken); // Додавання токена CSRF
+            var name1 = 'audio_' + r_word() + '.mp3';
+
+            var result = link_name();
+            var name = result[0];
+
+            formData.append('audio_blob', blob, name1); // Додавання аудіофайлу
+            formData.append('name', name); // Додавання аудіофайлу
+
+            // Відправка запиту POST на сервер
+            fetch('/load_sound', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+            })
+            .then(response => response.json())
+              .then(data => {
+                for(let i = 0; i < data.messegs.length; i++){
+
+                if (data.messegs[i][0][0] === data.username) {
+                dodavannya(data.messegs[i],"r","")
+                }
+                else {
+                dodavannya(data.messegs[i],"","")
+                }
+                }
+                // Тут ви можете отримати ваше повідомлення з JSON-відповіді
+                console.log(data.message);
+            })
+        };
+    }
+}
+
+
+//function send_r(){
+//    var blob = new Blob(chunks, { type: 'audio/mp3' });
+//
+//    var csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+//
+//    // Створення об'єкту FormData для відправки даних на сервер
+//    var formData = new FormData();
+//    formData.append('csrfmiddlewaretoken', csrftoken); // Додавання токена CSRF
+//    formData.append('audio_blob', blob, 'audio.mp3'); // Додавання аудіофайлу
+//
+//    // Відправка запиту POST на сервер
+//    fetch('/load_sound', {
+//        method: 'POST',
+//        body: formData,
+//    })
+//    .then(response => response.json())
+//      .then(data => {
+//        // Тут ви можете отримати ваше повідомлення з JSON-відповіді
+//        console.log(data.message);
+//    })
+//
+//
+//}
+
 
 
 

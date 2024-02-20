@@ -238,8 +238,44 @@ header {
     margin: 5px;
     width: 390px;
     height: 70px;
-
 }
+
+.volumeControl {
+    color: red; /* Змінює колір тексту */
+    margin: 3px 3px 0px 3px;
+    float: left;
+    width: 60px;
+}
+
+.playControl{
+    margin: 3px 3px 0px 3px;
+    float: left;
+    width: 200px;
+}
+
+.cl{
+    float: left;
+    border-radius: 5px;
+    background-color: #e6ab0b;
+}
+
+.sounds{
+    border-radius: 10px;
+    background-color: #062b66;
+    margin: 5px;
+    width: 390px;
+    height: 25px;
+}
+
+.mess_time{
+    float: left;
+    margin: 1px 2px 0px 2px;
+    font-family: cursive;
+    font-size: 14px;
+    color: white;
+}
+
+
 .table_group{
     background-color: #26292eDD;
 }
@@ -331,12 +367,7 @@ header {
     color: white;
 }
 
-#mess_time{
-    margin: 0px 2px 0px 2px;
-    font-family: cursive;
-    font-size: 14px;
-    color: white;
-}
+
 
 .mess_g{
     color: white;
@@ -411,14 +442,19 @@ header {
     color: white;
 }
 
+.record{
+    background-color: #434647;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+}
 .text_area{
     border: none;
     resize: none;
-    width: 800px;
+    width: 700px;
     height: 50px;
     background-color: #434647;
     border-radius: 5px;
-    margin: 0px 0px 0px 20px;
+    margin: 0px 0px 0px 10px;
     padding: 5px;
     font-family: cursive;
     font-size: 16px;
