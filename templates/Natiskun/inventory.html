@@ -16,7 +16,8 @@
                 <ul id="nav">
                     <li id="li"><a class="head_a" href="{% url 'index' %}">NatiSkun</a></li>
                     <li id="li"><a class="head_a" href="{% url 'inventory' %}">Inventory</a></li>
-                    <li id="li"><button onclick="play()">Play</button></li>
+                    <li id="li"><button onclick="play(len=1)">>></button></li>
+                    <li id="li"><button onclick="play(len=0)"><<</button></li>
 
 -->
                 </ul>
@@ -26,13 +27,6 @@
     </header>
 
     <div class="content">
-        <div>
-            {% csrf_token %}
-            <button onmousedown="record()" onmouseup="stop()">Record</button>
-            <button onclick="play_r()">Play</button>
-            <button onclick="send()">Send</button>
-
-        </div>
 
 
 

@@ -2,8 +2,6 @@
 // лічильник повідомлень
 var count = 0;
 
-
-
 // вставляє елемент звука
 function sound_element(divelement, s) {
     // Створення діву з класом sounds
@@ -27,7 +25,7 @@ function sound_element(divelement, s) {
     stopButton.classList.add('cl')
     stopButton.id = 'cl'+ word + "s"; // Враховуйте, що ID повинні бути унікальними
     stopButton.onclick = function() {
-    stop(word);
+    stop(sound);
     };
 
     // Створення ползунка для гучності
@@ -38,7 +36,7 @@ function sound_element(divelement, s) {
     volumeInput.min = '0';
     volumeInput.max = '1';
     volumeInput.step = '0.01';
-    volumeInput.value = '1';
+    volumeInput.value = '0.2';
 
     // Створення ползунка для контролю відтворення
     var playInput = document.createElement('input');
@@ -902,12 +900,14 @@ function formatTime(seconds) {
 }
 
 
-var audio1;
+let audioObjects = {};
 
 function play(word,sound){
-    audio1 = new Audio(sound);
+    var audio1 = new Audio(sound);
     audio1.play();
-    audio1.volume = 1;
+    audioObjects[sound] = audio1;
+    audio1.volume = 0.2;
+
 
     var interval = setInterval(function() {
 
@@ -940,11 +940,12 @@ function play(word,sound){
         audio1.currentTime = number
     });
 
-
 }
 
-function stop() {
-    audio1.pause();
+function stop(sound) {
+    if (audioObjects[sound]) {
+        audioObjects[sound].pause();
+    }
 }
 
 
