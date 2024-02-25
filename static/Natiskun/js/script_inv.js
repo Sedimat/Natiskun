@@ -21,6 +21,7 @@ document.addEventListener('mousemove', function(event) {
 
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
     // Створення зображення
     var img = document.createElement('img');
@@ -35,26 +36,93 @@ document.addEventListener('DOMContentLoaded', function() {
     // Додавання зображення до сторінки
     document.body.appendChild(img);
 
-    var newDiv = document.createElement('div');
-    newDiv.style.width = '600px';
-    newDiv.style.height = '600px';
-    newDiv.style.backgroundColor = "#676d7520";
-    newDiv.style.borderRadius = '5px';
-    newDiv.style.position = 'absolute';
-    newDiv.style.left = x / 2 - 343 + 'px';
-    newDiv.style.top = 100 + 'px';
-    newDiv.id = "test";
-    // Додавання нового елемента в DOM
-    document.body.appendChild(newDiv);
+//    var newDiv = document.createElement('div');
+//    newDiv.style.width = '600px';
+//    newDiv.style.height = '600px';
+//    newDiv.style.backgroundColor = "#676d7590";
+//    newDiv.style.borderRadius = '5px';
+//    newDiv.style.position = 'absolute';
+//    newDiv.style.left = x / 2 - 343 + 'px';
+//    newDiv.style.top = 100 + 'px';
+//    newDiv.classList.add('inv');
+//    newDiv.id = "test";
+//    // Додавання нового елемента в DOM
+//    document.body.appendChild(newDiv);
 
-    var messageLink = document.createElement('a');
-        messageLink.href = "#"; // Посилання на створений дів
-        messageLink.innerText = "Посилання";
-        messageLink.id = 'link_js'; // Додаємо id 'mess'
-        newDiv.appendChild(messageLink);
-
+//    var messageLink = document.createElement('a');
+//        messageLink.href = "#"; // Посилання на створений дів
+//        messageLink.innerText = "Посилання";
+//        messageLink.id = 'link_js'; // Додаємо id 'mess'
+//        newDiv.appendChild(messageLink);
 
 });
+
+function r_word() {
+    var letters = 'abcdefghijklmnopqrstuvwxyz'; // Англійський алфавіт
+    var randomLetter1 = letters.charAt(Math.floor(Math.random() * letters.length)); // Генеруємо першу букву
+    var randomLetter2 = letters.charAt(Math.floor(Math.random() * letters.length));
+    var randomLetter3 = letters.charAt(Math.floor(Math.random() * letters.length));
+    var randomLetters = randomLetter1 + randomLetter2 + randomLetter3;
+    return randomLetters;
+}
+
+
+//function delay(ms) {
+//    return new Promise(resolve => setTimeout(resolve, ms));
+//}
+//
+//async function add_div() {
+//    var parentElement = document.querySelector('.inv');
+//
+//    for (let i = 0; i < 5; i++) {
+//        var a = 0 + i * 110;
+//
+//        var newDiv = document.createElement('div');
+//        var name = "id_" + r_word();
+//        console.log(name)
+//        newDiv.classList.add('square');
+//        newDiv.id = 'div_' + i;
+//
+//        newDiv.style.left = a + 'px';
+//        newDiv.style.top = 300 + 'px';
+//        newDiv.style.position = 'absolute';
+//        newDiv.style.cursor = 'pointer';
+//
+//        // Додаємо обробники подій для руху за курсором миші
+//        newDiv.addEventListener('mousedown', function(event) {
+//            // Перевіряємо, чи натиснута ліва кнопка миші
+//            if (event.button === 0) {
+//                // Додаємо обробник події mousemove після натискання лівої кнопки миші
+//                document.addEventListener('mousemove', onMouseMove);
+//            }
+//        });
+//
+//        // Видаляємо обробник події mousemove після відпускання лівої кнопки миші
+//        document.addEventListener('mouseup', function(event) {
+//            // Перевіряємо, чи була відпущена ліва кнопка миші
+//            if (event.button === 0) {
+//                document.removeEventListener('mousemove', onMouseMove);
+//            }
+//        });
+//
+//        // Додаємо елемент в тіло сторінки
+//        document.body.appendChild(newDiv);
+//
+//        // Функція для переміщення елемента за курсором миші
+//        function onMouseMove(event) {
+//            var mouseX = event.clientX;
+//            var mouseY = event.clientY;
+//            var currentDiv = document.getElementById('div_' + i); // Отримуємо елемент по його id
+//            currentDiv.style.left = mouseX - (currentDiv.offsetWidth / 2) + 'px';
+//            currentDiv.style.top = mouseY - (currentDiv.offsetHeight / 2) + 'px';
+//            console.log(currentDiv.style.left, currentDiv.style.top, currentDiv.id)
+//        }
+//
+//
+//       await delay(50);
+//    }
+//}
+
 
 function play(len){
     if(len === 0){
@@ -70,8 +138,6 @@ function play(len){
     element.style.transition = 'left ' + 0.5 + 's linear'; // Плавний перехід з лінійною швидкістю
     element.style.left = pos + 'px'; // Переміщення на вказану позицію
 }
-
-
 
 
 

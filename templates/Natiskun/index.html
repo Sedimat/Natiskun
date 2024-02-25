@@ -21,7 +21,7 @@
                 <button type="submit" class="butt_green">Війти</button>
             </form>
         </td>
-        <td><a class="butt_red" href="#">Реєстрація</a></td>
+        <td><a class="butt_red" href="{% url 'user' %}">Реєстрація</a></td>
 
     </tr>
 </table>
@@ -54,18 +54,6 @@
     {% endfor %}
 
     {% else %}
-
-        <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">
-            {% csrf_token %}
-
-            <input type="text" class="table_basket1" name="username" id="username" placeholder="Ваш нікнейм">
-            <input type="email" class="table_basket1" name="email" id="email" placeholder="Електрона пошта">
-            <input type="password" class="table_basket1" name="password1" id="password1" placeholder="Пароль">
-            <input type="password" class="table_basket1" name="password2" id="password2" placeholder="Підтвердження">
-
-            <button type="submit" class="butt_green0">Зареєструватись</button>
-
-        </form>
 
     {% endif %}
 

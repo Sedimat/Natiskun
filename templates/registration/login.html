@@ -6,7 +6,7 @@
 
     {% load static %}
 
-    <link href="{% static 'Natiskun/style.css' %}" rel="stylesheet">
+    <link href="{% static 'Natiskun/css/style.css' %}" rel="stylesheet">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
         <div id="div_li">
             <nav>
                 <ul id="nav">
-                    <li id="li"><a class="head_a" href="#">NatiSkun</a></li>
+                    <li id="li"><a class="head_a" href="{% url 'index' %}">NatiSkun</a></li>
                     <!--
                 <li id="li"><a class="head_a" href="#">Послуги</a></li>
                 <li id="li"><a class="head_a" href="#">Контакти</a></li>
@@ -22,7 +22,19 @@
                 </ul>
             </nav>
         </div>
-        <div class="login">
+    </header>
+
+    <div class="content">
+
+        <div class="post">
+
+            <div class="div_messeg">
+
+            </div>
+
+        </div>
+
+        <div class="navigation">
             <table>
                 <tr>
                     <td width="300">
@@ -38,39 +50,6 @@
                 </tr>
 
             </table>
-
-
-
-        </div>
-    </header>
-
-    <div class="content">
-
-        <div class="post">
-
-            <div class="div_form">
-                <table>
-                    <tr>
-                        <form method="POST" role="form" action="#">
-                            <td width="300">
-                                {% csrf_token %}
-                                <textarea class="text_area" name="description" placeholder="Повідомленя"></textarea>
-                            </td>
-                            <td><button type="submit" class="butt_green">Send</button></td>
-                        </form>
-                    </tr>
-
-                </table>
-
-            </div>
-
-            <div class="div_messeg">
-
-            </div>
-
-        </div>
-
-        <div class="navigation">
 
         </div>
 

@@ -72,16 +72,6 @@
 
 </table>
 
-
-<div class="sounds">
-    <button id="cl" onclick="play()">➤</button>
-    <button id="cl" onclick="stop()">❚❚</button>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.1">
-    <input type="range" id="playControl" min="0" max="100" step="1" value="0">
-    <p id="mess_time">00:00</p>
-</div>
-
-
 {% else %}
 
 {% endif %}
@@ -121,10 +111,10 @@
 {% endblock %}
 
 {% block messeg %}
+
 <div class="search_result">
+{% if user.is_authenticated %}
 
-
-    <!--    <p id="mess">1</p>-->
     <div class="form_group_add">
         <form method="POST" role="form" action="{% url 'add_group' %}">
             {% csrf_token %}
@@ -157,10 +147,32 @@
             </div>
         </a>
     {% endfor %}
+    </div>
 
+
+
+    {% else %}
+    <div class="registration">
+
+        <form enctype="multipart/form-data" action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+
+            <input type="text" class="table_basket1" name="username" id="username" placeholder="Ваш нікнейм">
+            <input type="email" class="table_basket1" name="email" id="email" placeholder="Електрона пошта">
+            <input type="password" class="table_basket1" name="password1" id="password1" placeholder="Пароль">
+            <input type="password" class="table_basket1" name="password2" id="password2" placeholder="Підтвердження">
+
+            <button type="submit" class="butt_green0">Зареєструватись</button>
+
+        </form>
 
     </div>
 
-</div>
+    {% endif %}
+
+    </div>
+
+
+
 {% endblock %}
 

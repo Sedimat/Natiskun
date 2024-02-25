@@ -56,3 +56,11 @@ header {
     color: white;
 
 }
+
+.square{
+    float:left;
+    background-color: #75430e;
+    border-radius: 5px;
+    width: 100px;
+    height: 100px;
+}
