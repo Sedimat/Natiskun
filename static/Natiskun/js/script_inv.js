@@ -15,26 +15,98 @@ document.addEventListener('mousemove', function(event) {
         play(0)
     }
 
-    console.log('Положення курсора: X =', mouseX, 'Y =', mouseY);
+//    console.log('Положення курсора: X =', mouseX, 'Y =', mouseY);
 });
 
 
 
-
+var r_y = 30
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Створення зображення
-    var img = document.createElement('img');
-    img.style.position = 'absolute';
-    img.style.left = x / 2 - 171 + 'px';
-    img.style.top = 60 + 'px';
-    img.style.width = '300px';
-    img.id = 'dynamicImage';
-    img.src = '/media/inv/hud1.png'; // Шлях до зображення
-    img.alt = 'Dynamic Image'; // Альтернативний текст
+//    var img = document.createElement('img');
+//    img.style.position = 'absolute';
+//    img.style.left = x / 2 - 171 + 'px';
+//    img.style.top = 60 + 'px';
+//    img.style.width = '300px';
+//    img.id = 'dynamicImage';
+//    img.src = '/media/inv/hud1.png'; // Шлях до зображення
+//    img.alt = 'Dynamic Image'; // Альтернативний текст
+//
+//    // Додавання зображення до сторінки
+//    document.body.appendChild(img);
 
-    // Додавання зображення до сторінки
-    document.body.appendChild(img);
+    var contentDiv = document.querySelector('.content');
+    for (let i = 0; i < 3; i++) {
+
+        var img = document.createElement('img');
+        img.id = 'map';
+        img.classList.add('map0');
+        img.style.width = '1240px';
+        img.src = '/media/inv/map0.jpg'; // Шлях до зображення
+        img.alt = 'Dynamic Image'; // Альтернативний текст
+        contentDiv.appendChild(img);
+
+    }
+
+    for (let i = 0; i < 12; i++) {
+        var r_x = Math.floor(Math.random() * (1100 - 20 + 1)) + 20;
+
+        var link = document.createElement('a');
+        link.href = "#";
+
+        var newDiv = document.createElement('div');
+        newDiv.classList.add('square');
+        newDiv.id = 'div_' + i;
+        newDiv.style.left = r_x + 'px';
+        newDiv.style.top = r_y + 'px';
+        newDiv.style.position = 'absolute';
+
+        var img = document.createElement('img');
+        img.style.width = '90px';
+        img.id = 'dynamicImage';
+        img.src = '/media/inv/home0.png'; // Шлях до зображення
+//        img.src = '/media/inv/obj0.png'; // Шлях до зображення
+        img.alt = 'Dynamic Image'; // Альтернативний текст
+
+        newDiv.appendChild(img);
+
+
+        var paragraph = document.createElement('p');
+        paragraph.innerText = "Будинок";
+        paragraph.classList.add('name_loc');
+
+        newDiv.appendChild(paragraph);
+
+
+        link.appendChild(newDiv);
+
+        r_y += 150;
+
+        contentDiv.appendChild(link);
+
+
+        }
+
+//    var content = document.querySelector('.content');
+//
+//    for (let i = 0; i < 5; i++) {
+//        var a1 = x / 2 - 620;
+//
+//        var a = a1 + i * 110;
+//        var newDiv = document.createElement('div');
+//        newDiv.classList.add('square');
+//        newDiv.id = 'div_' + i;
+//
+//        newDiv.style.left = a + 'px';
+//        newDiv.style.top = 300 + 'px';
+//        newDiv.style.position = 'absolute';
+//
+//        content.appendChild(newDiv);
+//    }
+
+
+
+
 
 //    var newDiv = document.createElement('div');
 //    newDiv.style.width = '600px';

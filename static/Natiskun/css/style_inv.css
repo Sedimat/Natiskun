@@ -26,8 +26,8 @@ header {
 
 #nav{
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     display: flex;
 }
 
@@ -39,13 +39,37 @@ header {
 
 }
 
+.name_loc{
+    text-decoration: none;
+    font-family: Verdana;
+    margin: 0px 0px 0px 10px;
+    font-size: 14px;
+    color: white;
+
+}
+
 .content {
+    position: relative;
     display: flex;
-    height: 200px;
+    flex-direction: column;
     background-color: #292626;
     margin: auto;
     width: 1250px;
+    height: calc(100vh - 60px);
+    overflow-y: auto; /* Замініть scroll на auto, щоб вивести скрол тільки при потребі */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: grey; /* Колір вертикального скролбара для Firefox */
 
+    /* Стилізація WebKit (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        width: 6px; /* Ширина скролбара */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: grey; /* Колір пальця скролбара */
+        border-radius: 3px; /* Закруглення країв пальця скролбара */
+    }
 }
 
 #link_js{
@@ -58,9 +82,7 @@ header {
 }
 
 .square{
-    float:left;
-    background-color: #75430e;
-    border-radius: 5px;
     width: 100px;
     height: 100px;
+    border: 2px solid #d6a51e;
 }
