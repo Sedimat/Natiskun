@@ -601,3 +601,7 @@ def load_sound(request):
         return JsonResponse(context)
 
 
+def pixel(request):
+    context = {}
+
+    return render(request, 'Natiskun/pixel.html', context=context)

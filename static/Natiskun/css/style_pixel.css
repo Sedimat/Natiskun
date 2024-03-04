@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #1f2733;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    display: flex;
+    background-color: black;
+    margin: auto;
+    width: 1250px;
+    height: 60px;
+}
+
+.div_li{
+    flex: 2;
+    width: 300px;
+}
+
+#li {
+    margin: 20px 10px 20px 10px;
+}
+
+#nav{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+}
+
+.head_a{
+    text-decoration: none;
+    font-family: Verdana;
+    font-size: 18px;
+    color: white;
+
+}
+
+.name_loc{
+    text-decoration: none;
+    font-family: Verdana;
+    margin: 0px 0px 0px 10px;
+    font-size: 14px;
+    color: white;
+
+}
+
+.content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #292626;
+    margin: auto;
+    width: 1250px;
+    height: calc(100vh - 60px);
+    overflow-y: auto; /* Замініть scroll на auto, щоб вивести скрол тільки при потребі */
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: grey; /* Колір вертикального скролбара для Firefox */
+
+    /* Стилізація WebKit (Chrome, Safari) */
+    &::-webkit-scrollbar {
+        width: 6px; /* Ширина скролбара */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: grey; /* Колір пальця скролбара */
+        border-radius: 3px; /* Закруглення країв пальця скролбара */
+    }
+}
+
+
+.square{
+    border-radius: 10px;
+    background-color: black;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #d6a51e;
+}
